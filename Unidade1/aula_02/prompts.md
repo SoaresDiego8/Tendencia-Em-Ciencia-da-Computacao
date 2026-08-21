@@ -179,78 +179,103 @@ o que torna a metrica de cobertura possivel.
 
 ---
 
-## 5. Resposta obtida (prompt inicial)
+## 5. Prompt Refinado:
+```
+Você é um engenheiro de dados sênior responsável por pipelines de ingestão de
+APIs públicas. Sua reputação depende de nunca entregar um mapeamento que
+referencie campos inexistentes, porque isso quebra a carga em produção.
 
-Output colado sem edicao, exatamente como retornado pelo modelo.
+Tarefa: mapear o JSON fornecido para um schema relacional normalizado de data
+warehouse, incluindo caminhos de origem, colunas de destino, tipos, nulidade e
+regras de transformação.
 
-## Mapeamento proposto
+Contexto: a ingestão é incremental, alimenta um dashboard de acompanhamento
+processual e roda diariamente. O payload é a resposta da API pública do Datajud
+(CNJ). O destino é um banco relacional.
 
-Sugiro modelar em três tabelas relacionais: uma dimensão de processo e duas
-tabelas filhas para os arrays.
+Restrições:
+- Mapeie exclusivamente campos que existem literalmente no JSON fornecido.
+- Não presuma campos que costumam aparecer nesse tipo de API.
+- Colunas derivadas (chave surrogate, auditoria, propagação de chave do pai)
+  devem usar o caminho de origem "DERIVADO".
+- Campos que você optar por não carregar devem ir para "campos_ignorados" com
+  justificativa, nunca ser omitidos em silêncio.
 
-### `dim_processo`
+Critérios de qualidade (a resposta será medida por eles):
+1. Cobertura: todo caminho-folha do JSON deve aparecer exatamente uma vez, seja
+   em "colunas", seja em "campos_ignorados". Caminhos dentro de arrays são
+   representados com "[]" e contam uma única vez.
+2. Fidelidade: zero caminhos de origem que não existam no JSON.
+3. Rastreabilidade: cada tabela declara sua granularidade e sua ligação com a
+   tabela pai.
+4. Ao final, preencha "autoverificacao" com a contagem de caminhos-folha que
+   você identificou no JSON, quantos foram mapeados e quantos foram ignorados.
+   Os dois últimos devem somar o primeiro.
 
-| Campo de origem | Campo de destino | Tipo | Regra de transformação |
-|---|---|---|---|
-| `numeroProcesso` | `numero_processo` | VARCHAR(20) | Chave natural. Remover máscara se vier formatada. |
-| `tribunal` | `sigla_tribunal` | VARCHAR(10) | Uppercase. |
-| `grau` | `grau` | VARCHAR(3) | Domínio: G1, G2, JE. |
-| `nivelSigilo` | `nivel_sigilo` | SMALLINT | Filtrar registros com sigilo > 0 antes de expor no dashboard. |
-| `dataAjuizamento` | `data_ajuizamento` | TIMESTAMP | Converter de UTC para America/Sao_Paulo. |
-| `dataHoraUltimaAtualizacao` | `data_ultima_atualizacao` | TIMESTAMP | Watermark da carga incremental. |
-| `classe.codigo` | `cod_classe` | INTEGER | — |
-| `classe.nome` | `nome_classe` | VARCHAR(255) | Trim. |
-| `sistema.nome` | `sistema_origem` | VARCHAR(50) | — |
-| `formato.nome` | `formato_processo` | VARCHAR(20) | — |
-| `orgaoJulgador.codigo` | `cod_orgao_julgador` | INTEGER | — |
-| `orgaoJulgador.nome` | `nome_orgao_julgador` | VARCHAR(255) | — |
-| `orgaoJulgador.codigoMunicipioIBGE` | `cod_municipio_ibge` | INTEGER | Chave para dimensão geográfica. |
-| `dataArquivamento` | `data_arquivamento` | TIMESTAMP NULL | Nulo indica processo em curso. |
-| `valorCausa` | `valor_causa` | NUMERIC(15,2) | Converter para centavos ou manter duas casas. |
-| `situacao` | `situacao_processo` | VARCHAR(50) | Normalizar para domínio controlado. |
-| — | `sk_processo` | BIGINT | Chave surrogate gerada na carga. |
-| — | `data_ingestao` | TIMESTAMP | Timestamp de execução do pipeline. |
+Formato de saída: responda exclusivamente com um objeto JSON válido, sem texto
+antes ou depois e sem cercas de código, no schema:
 
-### `fato_movimento`
+{
+  "tabelas": [
+    {
+      "nome": "<string>",
+      "granularidade": "<uma linha por ...>",
+      "tabela_pai": "<nome ou null>",
+      "colunas": [
+        {
+          "caminho_origem": "<caminho no payload ou DERIVADO>",
+          "coluna_destino": "<string>",
+          "tipo": "<tipo SQL>",
+          "nulo_permitido": true,
+          "transformacao": "<regra ou 'copia direta'>"
+        }
+      ]
+    }
+  ],
+  "campos_ignorados": [
+    {"caminho_origem": "<string>", "justificativa": "<string>"}
+  ],
+  "pontos_de_atencao": ["<string>"],
+  "autoverificacao": {
+    "caminhos_folha_identificados": 0,
+    "mapeados": 0,
+    "ignorados": 0
+  }
+}
 
-| Campo de origem | Campo de destino | Tipo | Regra de transformação |
-|---|---|---|---|
-| `movimentos[].codigo` | `cod_movimento` | INTEGER | Código da TPU/CNJ. |
-| `movimentos[].nome` | `nome_movimento` | VARCHAR(255) | — |
-| `movimentos[].dataHora` | `data_hora_movimento` | TIMESTAMP | Converter fuso. |
-| `movimentos[].complementosTabelados[].descricao` | `descricao_complemento` | VARCHAR(255) | Concatenar quando houver mais de um. |
-| — | `numero_processo` | VARCHAR(20) | Propagar do pai para manter o vínculo. |
+Exemplo resolvido (padrão a seguir, com outro payload):
 
-### `ponte_processo_assunto`
+Entrada:
+{"_id": "ABC_1", "_source": {"codigoUnidade": 55, "responsavel": null,
+ "etiquetas": [{"id": 9, "texto": "urgente", "meta": {"origem": "manual"}}]}}
 
-| Campo de origem | Campo de destino | Tipo | Regra de transformação |
-|---|---|---|---|
-| `assuntos[].codigo` | `cod_assunto` | INTEGER | — |
-| `assuntos[].nome` | `nome_assunto` | VARCHAR(255) | — |
-| — | `numero_processo` | VARCHAR(20) | Propagar do pai. |
+Saída:
+{"tabelas": [
+  {"nome": "dim_unidade", "granularidade": "uma linha por unidade",
+   "tabela_pai": null, "colunas": [
+    {"caminho_origem": "_id", "coluna_destino": "id_documento_origem",
+     "tipo": "VARCHAR(80)", "nulo_permitido": false, "transformacao": "copia direta"},
+    {"caminho_origem": "_source.codigoUnidade", "coluna_destino": "cod_unidade",
+     "tipo": "INTEGER", "nulo_permitido": false, "transformacao": "copia direta"},
+    {"caminho_origem": "_source.responsavel", "coluna_destino": "responsavel",
+     "tipo": "VARCHAR(255)", "nulo_permitido": true, "transformacao": "nulo no exemplo; manter nullable"}]},
+  {"nome": "unidade_etiqueta", "granularidade": "uma linha por etiqueta",
+   "tabela_pai": "dim_unidade", "colunas": [
+    {"caminho_origem": "DERIVADO", "coluna_destino": "cod_unidade",
+     "tipo": "INTEGER", "nulo_permitido": false, "transformacao": "propagado do pai"},
+    {"caminho_origem": "_source.etiquetas[].id", "coluna_destino": "id_etiqueta",
+     "tipo": "INTEGER", "nulo_permitido": false, "transformacao": "copia direta"},
+    {"caminho_origem": "_source.etiquetas[].texto", "coluna_destino": "texto_etiqueta",
+     "tipo": "VARCHAR(255)", "nulo_permitido": false, "transformacao": "trim"},
+    {"caminho_origem": "_source.etiquetas[].meta.origem", "coluna_destino": "origem_etiqueta",
+     "tipo": "VARCHAR(50)", "nulo_permitido": true, "transformacao": "achatar objeto aninhado"}]}],
+ "campos_ignorados": [],
+ "pontos_de_atencao": ["Array sem identificador estavel exige delete/insert por pai."],
+ "autoverificacao": {"caminhos_folha_identificados": 6, "mapeados": 6, "ignorados": 0}}
 
-## Pontos de atenção
+Entrada real:
 
-1. **Achatamento de arrays.** `movimentos` e `assuntos` são coleções aninhadas e
-   não cabem na tabela de processo sem perda. Explodir em tabelas filhas é o
-   caminho mais seguro.
-2. **Fuso horário.** Todas as datas chegam em UTC com sufixo `Z`. Padronize a
-   conversão em um único ponto do pipeline.
-3. **Carga incremental.** Use `dataHoraUltimaAtualizacao` como watermark, mas
-   trate reprocessamento: o mesmo processo volta com movimentos novos, então a
-   estratégia deve ser upsert por `numeroProcesso` e delete/insert dos filhos.
-4. **Campos opcionais.** Alguns registros podem não trazer `dataArquivamento`
-   ou `valorCausa`. Defina os campos como nullable no destino.
-5. **Partes do processo.** Se o payload completo trouxer o array de partes,
-   será necessária mais uma tabela filha com CPF/CNPJ mascarado por LGPD.
-
----
-
-## Leitura rapida do resultado inicial
-
-Cobertura de 60,6% dos 33 caminhos-folha do payload, com dois campos citados que
-nao existem no JSON: `valorCausa` e `situacao`. Nenhum dos dois e aleatorio, os
-dois aparecem em outras APIs processuais. O modelo completou o que era provavel
-para o dominio, e o resultado passa despercebido justamente por ser plausivel.
-
-A medicao esta em `comparacao.md`.
+<json>
+{cole aqui o conteúdo de dados/payload-exemplo.json}
+</json>
+```
