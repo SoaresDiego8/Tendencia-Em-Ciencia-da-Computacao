@@ -1,57 +1,51 @@
-💻 Tendências em Ciência da Computação
+# 💻 Tendências em Ciência da Computação
 
-Repositório acadêmico para acompanhar minha evolução na disciplina de Tendências em Ciência da Computação.
+Repositório destinado ao acompanhamento da disciplina **Tendências em Ciência da Computação**.
 
-<div align="center">
+---
 
+## 📌 Sobre
 
+Este projeto será desenvolvido ao longo das aulas da disciplina, que acontecem todas as **quintas-feiras**.
 
+O objetivo deste repositório é registrar as atividades realizadas durante cada aula, reunindo os exercícios, códigos e demais materiais desenvolvidos ao longo da disciplina.
 
+Dessa forma, o GitHub servirá como um **histórico do meu aprendizado e da minha evolução** durante o curso.
 
-</div>
-📖 Sobre
+---
 
-Este repositório foi criado para registrar e organizar as atividades realizadas durante as aulas da disciplina de Tendências em Ciência da Computação.
+## 📂 Conteúdo
 
-A cada aula, novos exercícios, atividades e conteúdos serão adicionados ao projeto, criando um histórico do meu aprendizado ao longo da disciplina.
+Os exercícios serão organizados de acordo com cada aula:
 
-🎯 Objetivos
-📝 Realizar os exercícios propostos em aula
-💻 Desenvolver e armazenar os códigos das atividades
-📂 Organizar os exercícios por aula
-📚 Registrar os conteúdos estudados
-📈 Acompanhar minha evolução durante a disciplina
-☁️ Manter todas as atividades disponíveis no GitHub
-📁 Estrutura do projeto
-Tendencia-Em-Ciencia-da-Computacao/
+```text
+Tendencia-Em-Ciencia-da-Computacao
 │
-├── 📂 Aula-01/
-├── 📂 Aula-02/
-├── 📂 Aula-03/
-├── 📂 Aula-04/
-└── 📂 ...
+├── Aula-01
+├── Aula-02
+├── Aula-03
+├── Aula-04
+└── ...
+```
 
+Cada pasta poderá conter os arquivos e exercícios desenvolvidos na respectiva aula.
 
-A estrutura será atualizada conforme novas aulas forem realizadas.
+---
 
-📅 Aulas
+## 🎯 Objetivo
 
-As aulas da disciplina acontecem todas as quintas-feiras.
+A ideia é manter este repositório sempre atualizado, adicionando os exercícios após cada aula e documentando, de forma simples, o conteúdo desenvolvido durante a disciplina.
 
-Cada aula poderá conter seus respectivos exercícios, códigos, arquivos e materiais desenvolvidos durante o encontro.
+---
 
-🚀 Status do projeto
+## 🚧 Status
 
-🟡 Em desenvolvimento
+**Em desenvolvimento**
 
-Este repositório será atualizado continuamente durante o período da disciplina.
+O repositório será atualizado semanalmente conforme o andamento das aulas.
 
-👨‍💻 Objetivo pessoal
+---
 
-Utilizar este espaço não apenas para entregar as atividades, mas também para documentar minha jornada de aprendizado em Ciência da Computação, permitindo acompanhar minha evolução desde a primeira até a última aula.
+## 🎓 Tendências em Ciência da Computação
 
-<div align="center">
-
-📚 Aprender • 💻 Praticar • 🚀 Evoluir
-
-</div>
+Repositório acadêmico para registro das atividades e evolução na disciplina.
