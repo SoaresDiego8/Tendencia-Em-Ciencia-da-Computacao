@@ -1,0 +1,5 @@
+id_venda;data;cliente;produto;quantidade;valor_unitario;status;atualizado_em
+1007;03/09/2026;Rui Antunes;Caderno universitário;5;18,90;FATURADA;03/09/2026 08:55
+1008;03/09/2026;Sônia Prado;Mouse sem fio;1;79,90;FATURADA;03/09/2026 09:30
+1003;02/09/2026;Pedro Sá;Cadeira de escritório;4;1.234,56;CANCELADA;03/09/2026 11:00
+Total de registros: 3
