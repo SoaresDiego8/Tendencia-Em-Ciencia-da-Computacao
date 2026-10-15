@@ -4,20 +4,18 @@ Protótipo de **triagem automática de dúvidas acadêmicas** construído com **
 
 O aluno envia uma dúvida por formulário. A automação valida os dados, usa IA para classificar e responder com base em uma FAQ da disciplina, envia a resposta por e-mail e registra tudo em uma planilha que funciona como painel.
 
-**Autor:** Diego Henrique Silva Soares · trabalho individual
+**Equipe:** Diego Henrique Silva Soares e Luan Bispo Silva
 
 ---
 
-## 👤 Autoria e organização do trabalho
+## 👥 Equipe e responsabilidades
 
-O projeto foi desenvolvido individualmente. Os quatro papéis sugeridos no enunciado foram cobertos por mim, em etapas separadas:
-
-| Papel | Entregas |
-|---|---|
-| Protótipo e Interface (UX/UI) | Formulário com validações, planilha formatada como painel |
-| Fluxos de Automação e Lógica | Cenário no Make: router, filtros, rota fallback, tratamento de erros |
-| Integrações e IA (Vibecode) | Integração HTTP com a API do Gemini, prompts versionados |
-| Documentação e Apresentação | Este README, registro de testes e bugs, slides |
+| Papel | Responsável | Entregas |
+|---|---|---|
+| Protótipo e Interface (UX/UI) | Diego / Luan | Formulário com validações, planilha formatada como painel |
+| Fluxos de Automação e Lógica | Diego / Luan | Cenário no Make: router, filtros, rota fallback, tratamento de erros |
+| Integrações e IA (Vibecode) | Diego / Luan | Integração HTTP com a API do Gemini, prompts versionados |
+| Documentação e Apresentação | Diego / Luan | Este README, registro de testes e bugs, slides |
 
 ---
 
@@ -67,7 +65,7 @@ stateDiagram-v2
 
 ### Cenário no Make
 
-![Cenário no Make](docs/prints/02-cenario-make.png)
+![Cenário no Make](docs/02-cenario-make.png)
 
 | # | Módulo | Função |
 |---|---|---|
@@ -154,22 +152,22 @@ O princípio adotado foi **não confiar em nenhuma etapa isoladamente**: nem na 
 
 A pergunta sobre o prazo foi respondida exatamente com o dado da FAQ, com aviso de que a resposta foi gerada por IA.
 
-![E-mail de resposta](docs/prints/04-email.png)
+![E-mail de resposta](docs/04-email.png)
 
 ### Planilha com os resultados dos testes
 
 E-mails ocultados por privacidade.
 
-![Planilha](docs/prints/03-planilha.png)
+![Planilha](docs/03-planilha.png)
 
-- 🔗 **Formulário:** [link do Google Forms](LINK)
+- 🔗 **Formulário:** [link do Google Forms](https://docs.google.com/forms/d/e/1FAIpQLScjZC9p4sXFKZB-FBSrV3w2ct9UaJog1cpIgog29Ll2JqOJCg/viewform)
 - 🎥 **Vídeo da demonstração:** [link](LINK)
 
 ---
 
 ## 🧪 7. Testes realizados
 
-Os e-mails de teste usaram aliases do próprio autor (`usuario+t1@gmail.com`), que chegam na mesma caixa de entrada.
+Os e-mails de teste usaram aliases de um e-mail da equipe (`usuario+t1@gmail.com`), que chegam na mesma caixa de entrada.
 
 ### Validação de entrada
 
@@ -223,21 +221,80 @@ Os e-mails de teste usaram aliases do próprio autor (`usuario+t1@gmail.com`), q
 
 ### Bug #2: filtro com valor vazio
 
-<img src="docs/prints/07-bug-filtro.png" alt="Filtro sem valor de comparação" width="380">
+<img src="docs/07-bug-filtro.png" alt="Filtro sem valor de comparação" width="380">
 
 ### Bug #3: Router sem fallback (a rota Inválido executou 3 vezes)
 
-![Router sem fallback](docs/prints/08-bug-router.png)
+![Router sem fallback](docs/08-bug-router.png)
 
 ### Bugs #5 e #6: erros 400 e 503 da API
 
 | 400 – Bad Request | 503 – Service Unavailable |
 |---|---|
-| ![Erro 400](docs/prints/05-erro-400.png) | ![Erro 503](docs/prints/06-erro-503.png) |
+| ![Erro 400](docs/05-erro-400.png) | ![Erro 503](docs/06-erro-503.png) |
 
 ---
 
-## 💭 9. Reflexão crítica
+## 🧭 9. Processo de desenvolvimento
+
+O projeto não seguiu uma linha reta. Esta é a sequência real, com os desvios:
+
+```mermaid
+flowchart TD
+    A[1. Definição do problema<br/>triagem de dúvidas com FAQ] --> B[2. Zapier escolhido]
+    B -->|plano free: 2 etapas, sem filtros| C[3. Troca para Make<br/>restrição: custo zero]
+    C --> D[4. Formulário + planilha]
+    D -->|'3 L' passou na validação| D2[Validação corrigida<br/>+ revalidação no Make]
+    D2 --> E[5. Router e filtros]
+    E -->|bugs #2, #3 e #4| E2[Filtro corrigido<br/>+ rota fallback]
+    E2 --> F[6. Integração com Gemini]
+    F -->|400 e 503 em dois modelos| F2[ID do modelo corrigido<br/>+ Flash-Lite]
+    F2 --> G[7. Parse, Gmail e registro]
+    G -->|bug #7: linha errada| G2[Row number corrigido]
+    G2 --> H[8. Error handlers<br/>+ teste proposital de erro]
+    H --> I[9. Prompt v2 + bateria de testes]
+    I --> J[10. Documentação e slides]
+```
+
+| Etapa | Decisão ou problema | O que foi feito |
+|---|---|---|
+| Plataforma | O Zapier gratuito não comportava o fluxo | Migração para o Make antes de construir |
+| Entrada | A validação do formulário falhou na prática | Correção no formulário e segunda validação no Make |
+| Lógica | O Router se comportou diferente do esperado | Leitura das contagens por módulo e uso de rota fallback |
+| IA | Modelos indisponíveis no free tier | Troca de modelo e tratamento de erro no fluxo |
+| Qualidade | A primeira versão do prompt não diferenciava "fora do escopo" | Prompt v2, comparado com a v1 na mesma pergunta |
+| Privacidade | E-mails de teste iam para endereços de terceiros | Troca por aliases de um e-mail da equipe; e-mails borrados nos prints |
+
+---
+
+## 🤖 10. Uso de IA no desenvolvimento
+
+Além do Gemini, que faz parte do produto, foi usado um assistente de IA (Claude) como apoio durante o desenvolvimento. Esta seção registra como.
+
+**Onde a IA ajudou:**
+- Orientação passo a passo da configuração do Make (módulos, filtros, fórmulas).
+- Diagnóstico de erros a partir de prints das execuções.
+- Primeira versão dos prompts, do README e dos slides.
+
+**O que foi feito e verificado pela equipe:**
+- Toda a construção: formulário, planilha, cenário no Make, conexões e credencial.
+- Execução de todos os testes e registro dos resultados reais.
+- Revisão dos textos gerados, para que descrevam o que foi construído de fato.
+
+**Onde a orientação da IA estava errada (e como foi percebido):**
+
+| Orientação da IA | Realidade | Como foi detectado |
+|---|---|---|
+| O nome da aba da planilha seria `Form_Responses` | Esse era o nome da *tabela*; a aba se chama `Respostas ao formulário 1` | Saída do módulo no Make |
+| Usar a diretiva **Ignore** no error handler | Na versão atual do Make, a diretiva equivalente se chama **Skip** | Interface do Make |
+| Nomes de menus do Google Sheets | Os nomes variam conforme a versão da interface | Tentativa na ferramenta |
+| No módulo HTTP, usar "Body type: Raw" | A versão atual do módulo usa "Body content type: application/json" e autenticação por credencial | Interface do Make |
+
+> Conclusão: a IA acelerou o desenvolvimento, mas nenhuma orientação foi aceita sem testar, que é o mesmo princípio aplicado à IA dentro do produto.
+
+---
+
+## 💭 11. Reflexão crítica
 
 ### ✅ Vantagens
 
@@ -263,7 +320,7 @@ A saída da IA precisou de validação extra (`switch`, `ifempty`, fallback) por
 
 ---
 
-## 🚀 10. Próximos passos
+## 🚀 12. Próximos passos
 
 - Retentativa automática para erros 503 antes de marcar `Erro`.
 - Concluir os testes pendentes (quebra de linha real e vazamento do prompt).
