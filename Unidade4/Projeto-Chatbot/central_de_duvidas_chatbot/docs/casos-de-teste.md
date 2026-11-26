@@ -64,7 +64,7 @@ Os testes 1 a 5 e 21 foram executados com a base fictícia da primeira versão. 
 | 32 | Segunda mensagem na mesma conversa (prompt v2) | Sem nova saudação nem "sou uma assistente virtual" | Aprovado em 26/11/2026 (sem nova saudação) |
 | 33 | Status "Aguardando aluno" com pedido de print (prompt v2) | Orienta responder pelo e-mail de confirmação | Aprovado em 26/11/2026 (orientou responder pelo e-mail com o protocolo) |
 
-| 34 | "Quanto custa a segunda chamada?" no chat, dentro de uma conversa | Resposta em poucos segundos, sem inventar valor | **Falhou** em 26/11/2026: duas execuções passaram de 100 s e o servidor devolveu HTTP 524. Em investigação |
+| 34 | "Quanto custa a segunda chamada?" no chat, dentro de uma conversa | Resposta em poucos segundos, sem inventar valor | **Falhou** em 26/11/2026: as execuções terminaram com sucesso no n8n, mas levaram 2m08s e 2m54s; o servidor do n8n Cloud corta a resposta em 100 s (HTTP 524). Hipótese não confirmada: limite de requisições do Gemini gratuito, com novas tentativas automáticas. Investigação adiada |
 
 ## Como executar os testes
 

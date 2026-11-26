@@ -325,6 +325,7 @@ Esta bateria foi executada com a base fictícia da primeira versão. Depois da t
 | Caracteres especiais | aspas, `{chaves}`, HTML, `<script>`, emoji | ✅ processados sem quebrar nada |
 | Ciclo com a equipe | equipe muda o status para "Aguardando aluno" | ✅ a Duda repassou o pedido na conversa seguinte |
 | Falhas de integração | IA fora do ar, planilha sem acesso | ⏳ pendentes |
+| Tempo de resposta | mesma pergunta em sequência rápida no chat | ⚠️ duas execuções levaram 2 a 3 min; o servidor corta em 100 s (ver limitações) |
 
 ### Oportunidades de melhoria encontradas
 
@@ -362,7 +363,8 @@ No SerproBots, a homologação é a validação do conteúdo pelo "cliente" ante
 - [x] Alerta à equipe chega para urgência Alta e Revisão manual.
 - [x] A Duda reflete as atualizações feitas pela equipe na planilha.
 - [x] Nenhum dado de outra dúvida é revelado.
-- [ ] Prompt v2 (regras 11 a 13) aplicado no n8n e conversa revalidada.
+- [x] Prompt v2 (regras 11 a 13) aplicado no n8n e conversa revalidada (testes 32 e 33).
+- [x] Regressão da nova base executada (testes 28 a 31).
 - [ ] Testes de falha das integrações executados.
 - [x] Base de conhecimento trocada pelo plano de aulas oficial da disciplina (fonte validada pela professora).
 
@@ -438,7 +440,7 @@ Este é um protótipo educacional, não um sistema pronto para produção.
 
 ### Três limitações
 
-1. **Dependência de serviços gratuitos:** o n8n Cloud está em período de teste, e o free tier do Gemini tem cotas, lentidão (mais de 90 s na primeira chamada) e indisponibilidade. No free tier, os dados podem ser usados para treinar modelos.
+1. **Dependência de serviços gratuitos:** o n8n Cloud está em período de teste, e o free tier do Gemini tem cotas, lentidão e indisponibilidade: em sequências rápidas de mensagens, algumas respostas do chat levaram de 2 a 3 minutos e foram cortadas pelo servidor após 100 s. No free tier, os dados podem ser usados para treinar modelos.
 2. **IA não determinística:** foram precisas três regras novas depois dos testes, e a resistência a manipulação é probabilística. Revisão humana e testes de regressão continuam necessários.
 3. **Processo manual:** a Duda só informa o que a equipe registra. Se a planilha não for atualizada, o chatbot não tem novidades para contar.
 
