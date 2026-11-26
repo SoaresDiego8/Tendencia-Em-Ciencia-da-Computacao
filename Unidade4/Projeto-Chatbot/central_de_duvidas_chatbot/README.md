@@ -6,7 +6,7 @@ Este projeto é a evolução da [Central de Dúvidas da Unidade 3](../../../Unid
 
 ## Demonstração online
 
-Versão publicada: **link a definir** (publicar a pasta deste projeto na Vercel; veja [Publicação na Vercel](#6-publicação-na-vercel)).
+Acesse a versão publicada na Vercel: **https://tendencia-em-ciencia-da-computacao.vercel.app/**
 
 > **Estado do projeto:** a página chama dois webhooks de produção do n8n: um para enviar dúvidas e outro para o chatbot. Os dois workflows estão versionados em [`n8n/abrir-duvida-n8n.json`](n8n/abrir-duvida-n8n.json) e [`n8n/chatbot-duvidas-n8n.json`](n8n/chatbot-duvidas-n8n.json), **sem credenciais**. Os dois workflows estão publicados na instância `tendencia-computacao.app.n8n.cloud` e foram testados de ponta a ponta em 26/11/2026 (veja [Testes](#testes)). Como as URLs ficam no JavaScript do navegador, elas são visíveis a qualquer visitante; endpoints públicos precisam de validação, controle contra abuso e monitoramento.
 
@@ -245,6 +245,10 @@ Como a página é estática, basta abrir `index.html` no navegador para conferir
 
 ### 6. Publicação na Vercel
 
+A demonstração está publicada em [https://tendencia-em-ciencia-da-computacao.vercel.app/](https://tendencia-em-ciencia-da-computacao.vercel.app/). O projeto da Vercel está conectado a este repositório: cada commit na `main` gera uma nova publicação. O CORS dos dois webhooks foi conferido para esse domínio.
+
+Para reproduzir em outra conta:
+
 1. Na Vercel, crie um projeto a partir deste repositório.
 2. Em **Root Directory**, informe `Unidade4/Projeto-Chatbot/central_de_duvidas_chatbot`.
 3. Framework: **Other** (site estático, sem build).
@@ -369,7 +373,7 @@ Este projeto é um protótipo educacional, não um sistema de atendimento pronto
 
 ## Limitações e próximos passos
 
-1. Publicar a página na Vercel e registrar o link da demonstração.
+1. Restringir o CORS dos webhooks ao domínio da Vercel (hoje está `*`).
 2. Executar e registrar todos os casos de teste, incluindo falhas da IA, do Google Sheets e os cenários da assistente.
 3. Adicionar autenticação ou outra proteção apropriada aos endpoints e controles contra abuso.
 4. Notificar a equipe quando o aluno registrar uma nova informação pelo chat.

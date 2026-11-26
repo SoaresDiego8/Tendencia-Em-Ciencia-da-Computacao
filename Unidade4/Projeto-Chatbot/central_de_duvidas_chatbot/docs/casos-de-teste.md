@@ -18,7 +18,7 @@ Este documento separa resultados esperados do status registrado. A lógica dos n
 
 | # | Cenário | Resultado esperado | Status conhecido |
 |---:|---|---|---|
-| 1 | "Qual o prazo do trabalho final?" | Acadêmico / Média; resposta com 25/11/2026 da FAQ; status `Respondida` | Aprovado em 26/11/2026 (resposta do webhook: Acadêmico / Média, prazo da FAQ) |
+| 1 | "Qual o prazo do trabalho final?" | Acadêmico / Média; resposta com 25/11/2026 da FAQ; status `Respondida` | Aprovado em 26/11/2026 (Acadêmico / Média, prazo da FAQ; e-mail de resposta recebido) |
 | 2 | "Não consigo entrar no AVA e o prazo é amanhã!" | Técnico / Alta; contato do suporte; alerta à equipe | Pendente |
 | 3 | "Quanto custa a prova de segunda chamada?" | Financeiro; R$ 50,00 da FAQ | Pendente |
 | 4 | "Qual a capital da França?" | Outro / Baixa; informa que o canal é só da disciplina | Pendente |
