@@ -1,0 +1,19 @@
+flowchart LR
+    U[Aluno] --> F[Formulário web<br/>index.html]
+    F -->|POST JSON| W[Webhook público n8n]
+    W --> V{Validação dos dados}
+    V -->|Inválidos| E[Resposta HTTP 422]
+    E --> F
+    V -->|Válidos| N[Normalização e geração de protocolo]
+    N --> AI[Basic LLM Chain + Gemini + Structured Output Parser]
+    AI -->|Saída estruturada| OK[Categoria, urgência, resumo e resposta da FAQ]
+    AI -->|Falha ou saída inválida| FB[Fallback: Revisão manual / Média]
+    OK --> S[Google Sheets: registro]
+    FB --> S
+    S -->|Falha| E5[Resposta HTTP 500]
+    S --> M[Gmail: resposta ao aluno]
+    M --> P{Urgência Alta ou em revisão?}
+    P -->|Sim| A[Alerta para a equipe da disciplina]
+    P -->|Não| R[Resposta JSON]
+    A --> R
+    R --> F

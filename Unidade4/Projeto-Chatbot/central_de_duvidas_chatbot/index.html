@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Central de Dúvidas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: painel de contexto à esquerda + formulário à direita; após o envio, o formulário vira um comprovante com a resposta da IA. */
+:root {
+  --bg: #e8efec;
+  --surface: #ffffff;
+  --surface-2: #f3f7f5;
+  --ink: #13261f;
+  --muted: #56685f;
+  --line: #d0ddd6;
+  --accent: #0f7a5c;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcefe7;
+  --danger: #b4232f;
+  --danger-soft: #fbe7e8;
+  --alta: #b4232f; --alta-soft: #fbe7e8;
+  --media: #9a5b00; --media-soft: #fdf0d9;
+  --baixa: #1d6a8a; --baixa-soft: #e0eff6;
+  --ok: #0f7a5c;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1714; --surface: #15221d; --surface-2: #1b2b25; --ink: #e5f0eb; --muted: #97aba1; --line: #2a3d35;
+    --accent: #5fd0a8; --accent-ink: #0e1714; --accent-soft: #1c3b30;
+    --danger: #ff8a93; --danger-soft: #3a1c22;
+    --alta: #ff8a93; --alta-soft: #3a1c22; --media: #f2b75c; --media-soft: #3a2c14; --baixa: #7cc6e6; --baixa-soft: #16303d;
+    --ok: #5fd0a8;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1714; --surface: #15221d; --surface-2: #1b2b25; --ink: #e5f0eb; --muted: #97aba1; --line: #2a3d35;
+  --accent: #5fd0a8; --accent-ink: #0e1714; --accent-soft: #1c3b30;
+  --danger: #ff8a93; --danger-soft: #3a1c22;
+  --alta: #ff8a93; --alta-soft: #3a1c22; --media: #f2b75c; --media-soft: #3a2c14; --baixa: #7cc6e6; --baixa-soft: #16303d;
+  --ok: #5fd0a8;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font: 400 15px/1.55 var(--f-body);
+  padding-block: 40px 110px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  min-height: 100vh;
+}
+.shell { max-width: 1040px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; align-items: start; }
+@media (max-width: 820px) { .shell { grid-template-columns: minmax(0, 1fr); gap: 28px; } body { padding-block: 24px 110px; } }
+
+/* Painel de contexto */
+.intro { display: flex; flex-direction: column; gap: 22px; padding-top: 8px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 600 13px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 800 clamp(30px, 4.6vw, 44px)/1.05 var(--f-display); letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+.lead { margin: 0; color: var(--muted); max-width: 44ch; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.steps li { display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 12px; align-items: start; }
+.steps b { display: block; font-weight: 600; }
+.steps span.n { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; font: 600 13px/1 var(--f-mono); color: var(--accent); background: var(--surface); }
+.steps p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Chips de urgência */
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font: 600 12px/1.6 var(--f-body); }
+.chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.chip.alta { color: var(--alta); background: var(--alta-soft); }
+.chip.media { color: var(--media); background: var(--media-soft); }
+.chip.baixa { color: var(--baixa); background: var(--baixa-soft); }
+.chip.neutra { color: var(--muted); background: var(--surface-2); }
+
+/* Cartão do formulário */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 28px; box-shadow: 0 1px 2px rgba(19,38,31,.04), 0 12px 32px -18px rgba(19,38,31,.25); }
+@media (max-width: 480px) { .card { padding: 20px; } }
+.card h2 { font: 600 20px/1.2 var(--f-display); margin: 0 0 4px; }
+.card .sub { margin: 0 0 22px; color: var(--muted); font-size: 14px; }
+form { display: flex; flex-direction: column; gap: 18px; }
+.row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 18px; }
+@media (max-width: 560px) { .row { grid-template-columns: minmax(0,1fr); } }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+label { font-weight: 600; font-size: 14px; }
+label .req { color: var(--danger); font-weight: 500; }
+input, select, textarea {
+  font: inherit; color: var(--ink); background: var(--surface-2);
+  border: 1.5px solid var(--line); border-radius: 9px; padding: 10px 12px; width: 100%;
+  transition: border-color .15s, background .15s;
+}
+textarea { min-height: 130px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px var(--accent-soft); }
+.field.invalid input, .field.invalid textarea, .field.invalid select { border-color: var(--danger); }
+.hint { display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px; color: var(--muted); }
+.counter { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.counter.ok { color: var(--ok); }
+.err { font-size: 13px; color: var(--danger); }
+.err:empty { display: none; }
+
+.alert { border-radius: 9px; padding: 12px 14px; font-size: 14px; background: var(--danger-soft); color: var(--danger); }
+.actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+button {
+  font: 600 15px/1 var(--f-body); border: 0; border-radius: 9px; padding: 13px 20px; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink); display: inline-flex; align-items: center; gap: 10px;
+}
+button:hover { filter: brightness(1.06); }
+button:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 2px; }
+button[disabled] { opacity: .7; cursor: progress; }
+button.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--line); }
+.privacy { font-size: 12.5px; color: var(--muted); }
+.spinner { width: 15px; height: 15px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Comprovante da dúvida */
+.stub-head { display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px; }
+.stub-head .ok { display: inline-flex; align-items: center; gap: 8px; color: var(--ok); font-weight: 600; font-size: 14px; }
+.proto { font: 600 clamp(24px, 5vw, 32px)/1.1 var(--f-mono); letter-spacing: .03em; word-break: break-all; }
+.perf { height: 0; border-top: 2px dashed var(--line); margin: 0 -28px; position: relative; }
+.perf::before, .perf::after { content: ""; position: absolute; top: -11px; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); border: 1px solid var(--line); }
+.perf::before { left: -11px; } .perf::after { right: -11px; }
+@media (max-width: 480px) { .perf { margin: 0 -20px; } }
+dl { display: grid; grid-template-columns: max-content minmax(0,1fr); gap: 10px 18px; margin: 20px 0; }
+dt { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; padding-top: 2px; }
+dd { margin: 0; min-width: 0; }
+.tip { background: var(--accent-soft); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.tip b { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); }
+.tip span { white-space: pre-wrap; }
+.note { font-size: 13px; color: var(--muted); margin: 14px 0 18px; }
+.copy-msg { font-size: 13px; color: var(--ok); }
+
+/* Assistente (chat flutuante) */
+.bot-dock {
+  position: fixed; z-index: 50; display: flex; align-items: center; gap: 12px;
+  right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+}
+.bot-btn {
+  width: 60px; height: 60px; padding: 0; border-radius: 50%; justify-content: center; flex: none;
+  box-shadow: 0 10px 24px -8px rgba(15,122,92,.55), 0 2px 6px rgba(19,38,31,.18);
+}
+.bot-btn svg { width: 32px; height: 32px; }
+.bot-hint {
+  position: relative; background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+  border-radius: 14px; padding: 10px 34px 10px 14px; font-size: 14px; font-weight: 500; max-width: 240px;
+  box-shadow: 0 8px 24px -12px rgba(19,38,31,.35); cursor: pointer; animation: hint-in .35s ease-out both;
+}
+.bot-hint::after {
+  content: ""; position: absolute; right: -7px; top: 50%; width: 12px; height: 12px; margin-top: -6px;
+  background: var(--surface); border-right: 1px solid var(--line); border-top: 1px solid var(--line); transform: rotate(45deg);
+}
+.bot-hint-x {
+  position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; padding: 0; justify-content: center;
+  border-radius: 50%; background: transparent; color: var(--muted); font-size: 16px; font-weight: 500;
+}
+.bot-hint-x:hover { background: var(--surface-2); filter: none; }
+@keyframes hint-in { from { opacity: .4; transform: translateX(8px); } to { opacity: 1; transform: none; } }
+@media (max-width: 420px) { .bot-hint { max-width: 180px; font-size: 13px; } }
+
+.bot-panel {
+  position: fixed; z-index: 60; display: flex; flex-direction: column; overflow: hidden;
+  right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+  width: min(390px, calc(100vw - 32px)); height: min(600px, calc(100dvh - 120px));
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: 0 24px 60px -20px rgba(19,38,31,.45);
+}
+@media (max-width: 480px) { .bot-panel { right: 16px; left: 16px; width: auto; } }
+.bot-head { display: flex; align-items: center; gap: 10px; padding: 14px 14px 14px 16px; background: var(--accent); color: var(--accent-ink); }
+.bot-avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-ink); color: var(--accent); flex: none; }
+.bot-avatar svg { width: 22px; height: 22px; }
+.bot-title { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.bot-title b { font: 600 15px/1.2 var(--f-display); }
+.bot-title span { font-size: 12px; opacity: .85; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bot-head button { background: transparent; color: var(--accent-ink); padding: 6px 8px; font-size: 12.5px; border-radius: 7px; }
+.bot-head button:hover { background: rgba(255,255,255,.16); filter: none; }
+.bot-head .bot-close { font-size: 20px; line-height: 1; width: 32px; height: 32px; justify-content: center; padding: 0; }
+
+.bot-ident { padding: 18px 16px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+.bot-ident p { margin: 0; color: var(--muted); font-size: 14px; }
+.bot-ident ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+.bot-ident form { gap: 12px; }
+.bot-ident input { font-size: 14px; padding: 9px 11px; }
+.bot-ident label { font-size: 13px; }
+.bot-ident button[type="submit"] { justify-content: center; }
+
+.bot-log { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: var(--surface-2); }
+.msg { max-width: 85%; padding: 9px 12px; border-radius: 14px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg.bot { align-self: flex-start; background: var(--surface); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+.msg.user { align-self: flex-end; background: var(--accent); color: var(--accent-ink); border-bottom-right-radius: 4px; }
+.msg.erro { align-self: stretch; max-width: none; background: var(--danger-soft); color: var(--danger); border-radius: 10px; }
+.msg-tag { display: block; margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--ok); }
+.status-line { align-self: center; font-size: 12px; color: var(--muted); text-align: center; }
+.typing { display: inline-flex; gap: 4px; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: blink 1.2s infinite ease-in-out; }
+.typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+
+/* Menu de opções rápidas (inspirado nos balões OPTIONS do SerproBots) */
+.bot-opcoes { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 10px 0; background: var(--surface); border-top: 1px solid var(--line); }
+.bot-opcoes button { font-size: 12.5px; font-weight: 500; padding: 7px 11px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.bot-compose { display: flex; flex-direction: row; align-items: flex-end; gap: 8px; padding: 10px; background: var(--surface); }
+.bot-compose textarea { flex: 1; min-width: 0; min-height: 42px; max-height: 110px; resize: none; font-size: 14px; padding: 10px 11px; }
+.bot-compose button { flex: none; width: 44px; padding: 0; justify-content: center; align-self: flex-end; height: 42px; }
+.bot-compose button svg { width: 20px; height: 20px; }
+.bot-aviso { margin: 0; padding: 0 12px 10px; font-size: 11.5px; color: var(--muted); background: var(--surface); }
+
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2s; } .typing i, .bot-hint { animation: none; } * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main class="shell">
+  <section class="intro" aria-labelledby="titulo">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5 12 4l9 4.5-9 4.5-9-4.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7 10.5v4.5c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5M21 8.5v5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Tendências em Ciência da Computação
+    </div>
+    <h1 id="titulo">Tire sua dúvida e acompanhe a resposta pelo chat</h1>
+    <p class="lead">Envie sua dúvida sobre a disciplina. A IA responde na hora com base na FAQ oficial e, quando não sabe, encaminha para a equipe. Depois, é só conversar com a Duda para acompanhar.</p>
+    <ol class="steps">
+      <li><span class="n">1</span><div><b>Você envia a dúvida</b><p>Nome, e-mail, curso e a sua pergunta.</p></div></li>
+      <li><span class="n">2</span><div><b>A IA faz a triagem e responde</b><p>Categoria, urgência e uma resposta baseada somente na FAQ.</p></div></li>
+      <li><span class="n">3</span><div><b>Registro e aviso</b><p>A dúvida vai para a planilha, você recebe o e-mail e a equipe é alertada quando precisa agir.</p></div></li>
+      <li><span class="n">4</span><div><b>Acompanhe com a Duda</b><p>Pelo chat, com o protocolo e o e-mail, veja o andamento e envie novas informações.</p></div></li>
+    </ol>
+    <div>
+      <p class="privacy" style="margin:0 0 8px">Como a urgência é definida:</p>
+      <div class="legend">
+        <span class="chip alta">Alta: impede a entrega ou o acesso</span>
+        <span class="chip media">Média: prazos e avaliação</span>
+        <span class="chip baixa">Baixa: informativa</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" aria-live="polite">
+    <div id="view-form">
+      <h2>Nova dúvida</h2>
+      <p class="sub">Campos marcados com <span style="color:var(--danger)">*</span> são obrigatórios.</p>
+      <form id="form-duvida" novalidate>
+        <div class="row">
+          <div class="field" id="f-nome">
+            <label for="nome">Nome completo <span class="req">*</span></label>
+            <input id="nome" name="nome" type="text" autocomplete="name" placeholder="Ex.: Maria da Silva" maxlength="120">
+            <div class="err" id="e-nome"></div>
+          </div>
+          <div class="field" id="f-email">
+            <label for="email">E-mail <span class="req">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="nome@exemplo.com" maxlength="160">
+            <div class="err" id="e-email"></div>
+          </div>
+        </div>
+        <div class="field" id="f-curso">
+          <label for="curso">Curso <span class="req">*</span></label>
+          <select id="curso" name="curso">
+            <option value="" selected disabled>Selecione o seu curso</option>
+            <option>Ciência da Computação</option>
+            <option>Sistemas de Informação</option>
+            <option>Engenharia de Software</option>
+            <option>Análise e Desenvolvimento de Sistemas</option>
+            <option>Outro</option>
+          </select>
+          <div class="err" id="e-curso"></div>
+        </div>
+        <div class="field" id="f-duvida">
+          <label for="duvida">Sua dúvida <span class="req">*</span></label>
+          <textarea id="duvida" name="duvida" maxlength="1000" placeholder="Ex.: Qual é o prazo de entrega do trabalho final? Pode ser feito em grupo?"></textarea>
+          <div class="hint"><span>Seja específico: uma dúvida clara recebe uma resposta melhor.</span><span class="counter" id="contador">0 / mín. 10</span></div>
+          <div class="err" id="e-duvida"></div>
+        </div>
+        <div class="alert" id="alerta" hidden></div>
+        <div class="actions">
+          <button type="submit" id="btn-enviar"><span id="btn-texto">Enviar dúvida</span></button>
+          <span class="privacy">Não informe senhas nem documentos. Seus dados são usados apenas para responder à dúvida.</span>
+        </div>
+      </form>
+    </div>
+
+    <div id="view-ok" hidden>
+      <div class="stub-head">
+        <span class="ok"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Dúvida registrada</span>
+        <span class="privacy">Número do protocolo</span>
+        <div class="proto" id="r-protocolo">DV-00000000-XXXX</div>
+        <span class="privacy" id="r-data"></span>
+      </div>
+      <div class="perf" aria-hidden="true"></div>
+      <dl>
+        <dt>Categoria</dt><dd id="r-categoria"></dd>
+        <dt>Urgência</dt><dd><span class="chip" id="r-urgencia"></span></dd>
+        <dt>Status</dt><dd id="r-status"></dd>
+      </dl>
+      <div class="tip"><b>Resposta da Central</b><span id="r-resposta"></span></div>
+      <p class="note" id="r-nota">Você também receberá esta resposta por e-mail. Guarde o protocolo para conversar com a Duda.</p>
+      <div class="actions">
+        <button type="button" id="btn-chat">Acompanhar pelo chat</button>
+        <button type="button" class="ghost" id="btn-copiar">Copiar protocolo</button>
+        <button type="button" class="ghost" id="btn-novo">Enviar outra dúvida</button>
+        <span class="copy-msg" id="copy-msg" hidden>Protocolo copiado.</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="bot-dock" id="bot-dock">
+  <div class="bot-hint" id="bot-hint" role="button" tabindex="0">
+    Oi, eu sou a Duda! Quer acompanhar sua dúvida?
+    <button type="button" class="bot-hint-x" id="bot-hint-x" aria-label="Fechar aviso">×</button>
+  </div>
+  <button type="button" class="bot-btn" id="bot-btn" aria-label="Abrir a assistente Duda" aria-expanded="false" aria-controls="bot-panel">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M6 7h20a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H14l-6 5v-5H6a3 3 0 0 1-3-3V10a3 3 0 0 1 3-3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="11" cy="15.5" r="1.8" fill="currentColor"/><circle cx="16" cy="15.5" r="1.8" fill="currentColor"/><circle cx="21" cy="15.5" r="1.8" fill="currentColor"/>
+    </svg>
+  </button>
+</div>
+
+<section class="bot-panel" id="bot-panel" role="dialog" aria-label="Assistente Duda" hidden>
+  <header class="bot-head">
+    <span class="bot-avatar" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M3 8.5 12 4l9 4.5-9 4.5-9-4.5Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M7 10.5v4.5c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </span>
+    <div class="bot-title">
+      <b>Duda</b>
+      <span id="bot-sub">Assistente virtual com IA</span>
+    </div>
+    <button type="button" id="bot-trocar" hidden>Trocar dúvida</button>
+    <button type="button" class="bot-close" id="bot-close" aria-label="Fechar a assistente">×</button>
+  </header>
+
+  <div class="bot-ident" id="bot-ident">
+    <p>Olá! Eu sou a <b>Duda</b>, assistente virtual da Central de Dúvidas. Posso:</p>
+    <ul>
+      <li>contar como está o andamento da sua dúvida;</li>
+      <li>responder perguntas sobre prazos, avaliação e entrega;</li>
+      <li>registrar novas informações para a equipe.</li>
+    </ul>
+    <p>Para começar, informe o protocolo e o e-mail usado no envio da dúvida.</p>
+    <form id="bot-form-ident" novalidate>
+      <div class="field" id="f-bot-protocolo">
+        <label for="bot-protocolo">Protocolo</label>
+        <input id="bot-protocolo" type="text" placeholder="DV-20261126-K7QZ" maxlength="16" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field" id="f-bot-email">
+        <label for="bot-email">E-mail usado no envio</label>
+        <input id="bot-email" type="email" placeholder="nome@exemplo.com" maxlength="160" autocomplete="email">
+      </div>
+      <div class="alert" id="bot-ident-erro" hidden></div>
+      <button type="submit" id="bot-ident-btn">Consultar minha dúvida</button>
+    </form>
+  </div>
+
+  <div class="bot-log" id="bot-log" aria-live="polite" hidden></div>
+  <div class="bot-opcoes" id="bot-opcoes" hidden>
+    <button type="button" data-msg="Qual é o andamento da minha dúvida?">Andamento</button>
+    <button type="button" data-msg="A resposta resolveu a minha dúvida. Obrigado!">Resolveu, obrigado</button>
+    <button type="button" data-msg="A resposta não resolveu a minha dúvida.">Não resolveu</button>
+    <button type="button" data-foco="1">Enviar nova informação</button>
+  </div>
+  <form class="bot-compose" id="bot-compose" hidden>
+    <textarea id="bot-msg" aria-label="Mensagem para a Duda" rows="1" maxlength="1000" placeholder="Escreva sua mensagem..."></textarea>
+    <button type="submit" id="bot-send" aria-label="Enviar mensagem">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l16-8-6 16-2.5-6.5L4 12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    </button>
+  </form>
+  <p class="bot-aviso" id="bot-aviso" hidden>Respostas geradas com IA. Não envie senhas nem dados pessoais.</p>
+</section>
+
+<script>
+/* Endereços de produção dos webhooks no n8n. Troque SEU-WORKSPACE pelo endereço da sua instância. */
+window.CONFIG_CENTRAL = {
+  WEBHOOK_URL: "https://SEU-WORKSPACE.app.n8n.cloud/webhook/abrir-duvida",
+  CHAT_URL: "https://SEU-WORKSPACE.app.n8n.cloud/webhook/chat-duvida"
+};
+</script>
+
+<script>
+/* Formulário de envio de dúvida: conversa com o workflow "Central de Dúvidas - Abertura e Triagem com IA". */
+(function () {
+  var WEBHOOK_URL = window.CONFIG_CENTRAL.WEBHOOK_URL;
+  var TEMPO_LIMITE_MS = 60000;
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var MIN_DUVIDA = 10;
+
+  var form = document.getElementById("form-duvida");
+  var campos = {
+    nome: document.getElementById("nome"),
+    email: document.getElementById("email"),
+    curso: document.getElementById("curso"),
+    duvida: document.getElementById("duvida")
+  };
+  var contador = document.getElementById("contador");
+  var alerta = document.getElementById("alerta");
+  var btn = document.getElementById("btn-enviar");
+  var btnTexto = document.getElementById("btn-texto");
+
+  function setErro(nome, msg) {
+    document.getElementById("e-" + nome).textContent = msg || "";
+    document.getElementById("f-" + nome).classList.toggle("invalid", !!msg);
+  }
+  function limparErros() {
+    ["nome", "email", "curso", "duvida"].forEach(function (n) { setErro(n, ""); });
+    alerta.hidden = true; alerta.textContent = "";
+  }
+
+  campos.duvida.addEventListener("input", function () {
+    var n = campos.duvida.value.trim().length;
+    contador.textContent = n + (n >= MIN_DUVIDA ? " / 1000" : " / mín. " + MIN_DUVIDA);
+    contador.classList.toggle("ok", n >= MIN_DUVIDA);
+    if (n >= MIN_DUVIDA) setErro("duvida", "");
+  });
+  ["nome", "email", "curso"].forEach(function (k) {
+    campos[k].addEventListener("input", function () { setErro(k, ""); });
+  });
+
+  function validar(d) {
+    var ok = true;
+    if (d.nome.length < 3) { setErro("nome", "Informe o seu nome completo."); ok = false; }
+    if (!EMAIL_RE.test(d.email)) { setErro("email", "Use um e-mail válido, por exemplo nome@exemplo.com."); ok = false; }
+    if (!d.curso) { setErro("curso", "Selecione o seu curso."); ok = false; }
+    if (d.duvida.length < MIN_DUVIDA) { setErro("duvida", "Escreva a dúvida com pelo menos " + MIN_DUVIDA + " caracteres (você digitou " + d.duvida.length + ")."); ok = false; }
+    return ok;
+  }
+
+  function carregando(sim) {
+    btn.disabled = sim;
+    btnTexto.textContent = sim ? "Analisando com IA..." : "Enviar dúvida";
+    var sp = btn.querySelector(".spinner");
+    if (sim && !sp) { sp = document.createElement("span"); sp.className = "spinner"; sp.setAttribute("aria-hidden", "true"); btn.insertBefore(sp, btnTexto); }
+    if (!sim && sp) sp.remove();
+  }
+
+  function mostrarSucesso(r) {
+    document.getElementById("r-protocolo").textContent = r.protocolo || "-";
+    document.getElementById("r-data").textContent = r.data_abertura ? "Enviada em " + r.data_abertura : "";
+    document.getElementById("r-categoria").textContent = r.categoria || "-";
+    document.getElementById("r-status").textContent = r.status || "-";
+    var u = document.getElementById("r-urgencia");
+    var urg = r.urgencia || "Média";
+    u.textContent = urg;
+    u.className = "chip " + ({ "Alta": "alta", "Média": "media", "Baixa": "baixa" }[urg] || "neutra");
+    document.getElementById("r-resposta").textContent = r.resposta || "A equipe da disciplina analisará sua dúvida em breve.";
+    document.getElementById("r-nota").textContent = (r.classificado_por_ia === false
+      ? "A resposta automática não estava disponível, então sua dúvida foi encaminhada para a equipe. "
+      : "") + "Você também receberá esta resposta por e-mail. Guarde o protocolo para conversar com a Duda.";
+    document.getElementById("view-form").hidden = true;
+    document.getElementById("view-ok").hidden = false;
+    document.getElementById("btn-chat").focus();
+  }
+
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    limparErros();
+    var dados = {
+      nome: campos.nome.value.trim(),
+      email: campos.email.value.trim().toLowerCase(),
+      curso: campos.curso.value,
+      duvida: campos.duvida.value.trim()
+    };
+    if (!validar(dados)) {
+      var primeiro = document.querySelector(".field.invalid input, .field.invalid select, .field.invalid textarea");
+      if (primeiro) primeiro.focus();
+      return;
+    }
+    if (WEBHOOK_URL.indexOf("SEU-WORKSPACE") !== -1) {
+      alerta.textContent = "A página ainda não foi configurada: troque SEU-WORKSPACE pelo endereço da instância do n8n em CONFIG_CENTRAL.";
+      alerta.hidden = false;
+      return;
+    }
+
+    carregando(true);
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, TEMPO_LIMITE_MS);
+
+    fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+      signal: ctrl.signal
+    })
+      .then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (corpo) { return { status: res.status, corpo: corpo }; });
+      })
+      .then(function (r) {
+        if (r.corpo && r.corpo.sucesso === true) {
+          window.ultimaDuvida = { protocolo: r.corpo.protocolo, email: dados.email };
+          mostrarSucesso(r.corpo);
+          return;
+        }
+        if (r.status === 422 && r.corpo) {
+          var e = r.corpo.erros || {};
+          ["nome", "email", "curso", "duvida"].forEach(function (k) { if (e[k]) setErro(k, e[k]); });
+          alerta.textContent = r.corpo.mensagem || "Confira os campos destacados e envie novamente.";
+          alerta.hidden = false;
+          return;
+        }
+        alerta.textContent = (r.corpo && r.corpo.mensagem) || ("O servidor não conseguiu registrar a dúvida (código " + r.status + "). Tente novamente em alguns instantes.");
+        alerta.hidden = false;
+      })
+      .catch(function (e) {
+        alerta.textContent = e && e.name === "AbortError"
+          ? "A análise demorou mais que o esperado. Verifique seu e-mail antes de reenviar, pois a dúvida pode ter sido registrada."
+          : "Não foi possível conectar à Central de Dúvidas. Verifique sua conexão e se o workflow está publicado no n8n.";
+        alerta.hidden = false;
+      })
+      .finally(function () { clearTimeout(timer); carregando(false); });
+  });
+
+  document.getElementById("btn-novo").addEventListener("click", function () {
+    form.reset(); limparErros();
+    contador.textContent = "0 / mín. " + MIN_DUVIDA; contador.classList.remove("ok");
+    document.getElementById("copy-msg").hidden = true;
+    document.getElementById("view-ok").hidden = true;
+    document.getElementById("view-form").hidden = false;
+    campos.nome.focus();
+  });
+
+  document.getElementById("btn-copiar").addEventListener("click", function () {
+    var texto = document.getElementById("r-protocolo").textContent;
+    var msg = document.getElementById("copy-msg");
+    function ok() { msg.textContent = "Protocolo copiado."; msg.hidden = false; }
+    function falha() {
+      var rg = document.createRange(); rg.selectNodeContents(document.getElementById("r-protocolo"));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(rg);
+      msg.textContent = "Protocolo selecionado. Use Ctrl+C para copiar."; msg.hidden = false;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(texto).then(ok, falha); else falha();
+  });
+
+  document.getElementById("btn-chat").addEventListener("click", function () {
+    if (window.abrirDuda) window.abrirDuda();
+  });
+})();
+</script>
+
+<script>
+/* Assistente Duda: conversa com o workflow "Central de Dúvidas - Chatbot de Acompanhamento" no n8n. */
+(function () {
+  var CHAT_URL = window.CONFIG_CENTRAL.CHAT_URL;
+  var TEMPO_LIMITE_MS = 45000;
+  var PROTO_RE = /^DV-\d{8}-[A-Z0-9]{4}$/;
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var PRIMEIRA_PERGUNTA = "Qual é o andamento da minha dúvida?";
+
+  var $ = function (id) { return document.getElementById(id); };
+  var hint = $("bot-hint"), btn = $("bot-btn"), panel = $("bot-panel");
+  var ident = $("bot-ident"), formIdent = $("bot-form-ident"), identErro = $("bot-ident-erro"), identBtn = $("bot-ident-btn");
+  var inProto = $("bot-protocolo"), inEmail = $("bot-email");
+  var log = $("bot-log"), opcoes = $("bot-opcoes"), compose = $("bot-compose"), inMsg = $("bot-msg"), sendBtn = $("bot-send");
+  var aviso = $("bot-aviso"), sub = $("bot-sub"), trocar = $("bot-trocar");
+
+  var sessao = null;      /* { protocolo, email, sessionId } */
+  var enviando = false;
+
+  function novoId() {
+    try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+    return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  }
+
+  /* Balão de convite */
+  function esconderDica() { hint.hidden = true; try { sessionStorage.setItem("duda-hint-off", "1"); } catch (e) {} }
+  try { if (sessionStorage.getItem("duda-hint-off") === "1") hint.hidden = true; } catch (e) {}
+  $("bot-hint-x").addEventListener("click", function (ev) { ev.stopPropagation(); esconderDica(); });
+
+  function abrir() {
+    panel.hidden = false; hint.hidden = true; btn.setAttribute("aria-expanded", "true");
+    if (!sessao) {
+      var u = window.ultimaDuvida;
+      if (u && !inProto.value) { inProto.value = u.protocolo || ""; inEmail.value = u.email || ""; }
+      (inProto.value ? (inEmail.value ? identBtn : inEmail) : inProto).focus();
+    } else { inMsg.focus(); }
+  }
+  window.abrirDuda = abrir;
+  function fechar() { panel.hidden = true; btn.setAttribute("aria-expanded", "false"); btn.focus(); }
+  btn.addEventListener("click", function () { panel.hidden ? abrir() : fechar(); });
+  hint.addEventListener("click", abrir);
+  hint.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); abrir(); } });
+  $("bot-close").addEventListener("click", fechar);
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && !panel.hidden) fechar(); });
+
+  /* Mensagens (sempre com textContent: o texto da IA nunca vira HTML) */
+  function addMsg(tipo, texto, tag) {
+    var el = document.createElement("div");
+    el.className = "msg " + tipo;
+    el.textContent = texto;
+    if (tag) { var t = document.createElement("span"); t.className = "msg-tag"; t.textContent = tag; el.appendChild(t); }
+    log.appendChild(el); log.scrollTop = log.scrollHeight;
+    return el;
+  }
+  function addDigitando() {
+    var el = document.createElement("div");
+    el.className = "msg bot"; el.setAttribute("aria-label", "A Duda está digitando");
+    el.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
+    log.appendChild(el); log.scrollTop = log.scrollHeight;
+    return el;
+  }
+  function travar(sim) {
+    enviando = sim; sendBtn.disabled = sim; identBtn.disabled = sim;
+    Array.prototype.forEach.call(opcoes.querySelectorAll("button"), function (b) { b.disabled = sim; });
+  }
+
+  function chamar(mensagem) {
+    if (CHAT_URL.indexOf("SEU-WORKSPACE") !== -1) {
+      return Promise.resolve({ sucesso: false, mensagem: "O chat ainda não foi configurado: troque SEU-WORKSPACE pelo endereço da instância do n8n em CONFIG_CENTRAL." });
+    }
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, TEMPO_LIMITE_MS);
+    return fetch(CHAT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ protocolo: sessao.protocolo, email: sessao.email, sessionId: sessao.sessionId, mensagem: mensagem }),
+      signal: ctrl.signal
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }).then(function (c) { c._status = res.status; return c; }); })
+      .catch(function (e) {
+        return { sucesso: false, motivo: e && e.name === "AbortError" ? "tempo" : "rede" };
+      })
+      .finally(function () { clearTimeout(timer); });
+  }
+
+  function textoErro(r) {
+    if (r.motivo === "tempo") return "Demorei mais que o esperado para responder. Pode enviar a mensagem de novo?";
+    if (r.motivo === "rede") return "Não consegui me conectar. Verifique sua conexão e se o workflow do chatbot está publicado no n8n.";
+    return r.mensagem || "Não consegui responder agora. Tente novamente em instantes.";
+  }
+
+  /* Identificação: a primeira pergunta já confirma protocolo e e-mail no n8n. */
+  formIdent.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    if (enviando) return;
+    var protocolo = inProto.value.trim().toUpperCase();
+    var email = inEmail.value.trim().toLowerCase();
+    var erros = [];
+    $("f-bot-protocolo").classList.toggle("invalid", !PROTO_RE.test(protocolo));
+    $("f-bot-email").classList.toggle("invalid", !EMAIL_RE.test(email));
+    if (!PROTO_RE.test(protocolo)) erros.push("O protocolo deve seguir o formato DV-AAAAMMDD-XXXX.");
+    if (!EMAIL_RE.test(email)) erros.push("Informe um e-mail válido, por exemplo nome@exemplo.com.");
+    if (erros.length) { identErro.textContent = erros.join(" "); identErro.hidden = false; return; }
+    identErro.hidden = true;
+
+    sessao = { protocolo: protocolo, email: email, sessionId: novoId() };
+    travar(true); identBtn.textContent = "Consultando...";
+    chamar(PRIMEIRA_PERGUNTA).then(function (r) {
+      travar(false); identBtn.textContent = "Consultar minha dúvida";
+      if (r.sucesso !== true) {
+        sessao = null;
+        identErro.textContent = textoErro(r); identErro.hidden = false;
+        return;
+      }
+      log.textContent = "";
+      ident.hidden = true; log.hidden = false; opcoes.hidden = false; compose.hidden = false; aviso.hidden = false; trocar.hidden = false;
+      sub.textContent = "Dúvida " + protocolo + (r.status ? " · " + r.status : "");
+      var linha = document.createElement("div"); linha.className = "status-line";
+      linha.textContent = "Conversa sobre a dúvida " + protocolo; log.appendChild(linha);
+      addMsg("user", PRIMEIRA_PERGUNTA);
+      addMsg("bot", r.resposta || "Encontrei a sua dúvida. Como posso ajudar?", r.registrado ? "Informação registrada para a equipe" : "");
+      inMsg.focus();
+    });
+  });
+
+  /* Conversa */
+  function enviar(texto) {
+    texto = (texto || "").trim();
+    if (!texto || enviando || !sessao) return;
+    addMsg("user", texto);
+    travar(true);
+    var dig = addDigitando();
+    chamar(texto).then(function (r) {
+      dig.remove(); travar(false);
+      if (r.sucesso === true) {
+        addMsg("bot", r.resposta || "Certo.", r.registrado ? "Informação registrada para a equipe" : "");
+        if (r.status) sub.textContent = "Dúvida " + sessao.protocolo + " · " + r.status;
+      } else {
+        addMsg("erro", textoErro(r));
+      }
+      inMsg.focus();
+    });
+  }
+  compose.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var t = inMsg.value; inMsg.value = ""; ajustarAltura(); enviar(t);
+  });
+  inMsg.addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter" && !ev.shiftKey) { ev.preventDefault(); compose.requestSubmit ? compose.requestSubmit() : compose.dispatchEvent(new Event("submit")); }
+  });
+  function ajustarAltura() { inMsg.style.height = "auto"; inMsg.style.height = Math.min(inMsg.scrollHeight, 110) + "px"; }
+  inMsg.addEventListener("input", ajustarAltura);
+
+  /* Menu de opções rápidas */
+  opcoes.addEventListener("click", function (ev) {
+    var b = ev.target.closest("button");
+    if (!b) return;
+    if (b.getAttribute("data-foco")) {
+      inMsg.placeholder = "Descreva a nova informação para a equipe...";
+      inMsg.focus();
+      return;
+    }
+    enviar(b.getAttribute("data-msg"));
+  });
+
+  trocar.addEventListener("click", function () {
+    sessao = null; log.textContent = "";
+    log.hidden = true; opcoes.hidden = true; compose.hidden = true; aviso.hidden = true; trocar.hidden = true; ident.hidden = false;
+    sub.textContent = "Assistente virtual com IA";
+    inMsg.placeholder = "Escreva sua mensagem...";
+    inProto.value = ""; inEmail.value = ""; inProto.focus();
+  });
+})();
+</script>
+</body>
+</html>
