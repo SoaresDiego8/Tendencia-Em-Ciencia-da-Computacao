@@ -118,11 +118,11 @@ Versão-fonte do diagrama de envio: [`docs/arquitetura.mmd`](docs/arquitetura.mm
 
 ## Assistente de acompanhamento (chatbot)
 
-O botão "Falar com a Duda", no topo da página e no canto inferior direito, abre o chat em uma gaveta lateral (tela cheia no celular).
+O botão "Falar com a Duda", no topo da página e no canto inferior direito, abre o chat (tela cheia no celular).
 
 ### Identidade visual
 
-A página tem identidade própria, inspirada em um caderno de turma: fundo de papel com pauta discreta, tinta azul-índigo, destaques em amarelo marca-texto e títulos em fonte serifada (Fraunces). A abertura traz um quadro com as **dúvidas mais comuns**, que preenche o formulário com um clique; as etapas aparecem numeradas na horizontal; a resposta da IA é exibida como uma anotação destacada, com o protocolo em forma de selo. Há tema claro e escuro, conforme o sistema.
+A página é simples e em uma coluna: barra verde no topo, título curto, o "como funciona" em uma linha, o formulário em um único card (com sugestões das dúvidas mais comuns, que preenchem o campo com um clique) e a resposta exibida no mesmo card, com protocolo, categoria, urgência e status em etiquetas. A paleta é verde, com tema claro e escuro conforme o sistema.
 
 ### Fluxo da conversa
 
@@ -346,7 +346,7 @@ Pela página publicada, também foram aprovados: dúvida urgente ("Não consigo 
 |---|---|---|
 | <img src="docs/prints/03-chat-nao-resolveu.png" alt="Etiqueta Informação registrada para a equipe" width="260"> | <img src="docs/prints/04-chat-recusa-prompt.png" alt="Duda recusando mostrar o prompt" width="260"> | <img src="docs/prints/05-chat-status-atualizado.png" alt="Duda informando status Aguardando aluno" width="260"> |
 
-Os dados das conversas são fictícios. As capturas foram feitas antes da mudança de identidade visual da página; o comportamento do chat é o mesmo.
+Os dados das conversas são fictícios. As capturas foram feitas antes da simplificação do layout da página (mesmas cores); o comportamento do chat é o mesmo.
 
 Cenários sugeridos para a assistente:
 

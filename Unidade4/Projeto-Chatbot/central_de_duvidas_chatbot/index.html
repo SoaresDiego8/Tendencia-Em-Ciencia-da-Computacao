@@ -7,401 +7,284 @@
 <meta name="description" content="Central de Dúvidas da disciplina Tendências em Ciência da Computação, com triagem por IA e a assistente Duda.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
-/* Identidade: caderno de turma. Papel, tinta índigo e marca-texto amarelo. */
+/* Layout simples: uma coluna centralizada. Paleta verde da Central de Dúvidas. */
 :root {
-  --paper: #f6f2e8;
-  --paper-2: #efe9db;
-  --card: #fffdf7;
-  --ink: #1c2233;
-  --ink-2: #3a4157;
-  --muted: #6b6f7d;
-  --rule: #e2dccb;
-  --indigo: #3b3fb6;
-  --indigo-ink: #ffffff;
-  --indigo-soft: #e6e6f8;
-  --mark: #ffe566;
-  --mark-ink: #2a2300;
-  --danger: #b42318; --danger-soft: #fde4e2;
-  --alta: #b42318; --alta-soft: #fde4e2;
-  --media: #8f5600; --media-soft: #fdf0cf;
-  --baixa: #0f6a8f; --baixa-soft: #ddf0f8;
-  --ok: #1d7a4f; --ok-soft: #ddf3e7;
-  --shadow: 0 1px 0 rgba(28,34,51,.06), 0 18px 40px -28px rgba(28,34,51,.45);
-  --f-serif: "Fraunces", Georgia, "Times New Roman", serif;
-  --f-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
-  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --bg: #eef3f0;
+  --surface: #ffffff;
+  --surface-2: #f4f8f6;
+  --ink: #13261f;
+  --muted: #5b6d64;
+  --line: #d6e2dc;
+  --accent: #0f7a5c;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcefe7;
+  --danger: #b4232f; --danger-soft: #fbe7e8;
+  --alta: #b4232f; --alta-soft: #fbe7e8;
+  --media: #9a5b00; --media-soft: #fdf0d9;
+  --baixa: #1d6a8a; --baixa-soft: #e0eff6;
+  --ok: #0f7a5c;
+  --font: "Inter", "Segoe UI", system-ui, sans-serif;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #13151b; --paper-2: #191c24; --card: #1d212b; --ink: #efeadf; --ink-2: #cfcabd; --muted: #9a9caa; --rule: #2d3240;
-    --indigo: #a9adff; --indigo-ink: #13151b; --indigo-soft: #262a4a; --mark: #d9b92e; --mark-ink: #1a1500;
-    --danger: #ff9b92; --danger-soft: #3b1d1b; --alta: #ff9b92; --alta-soft: #3b1d1b; --media: #f3c063; --media-soft: #3a2d12;
-    --baixa: #7fd0f0; --baixa-soft: #12303d; --ok: #74d6a3; --ok-soft: #153325;
-    --shadow: 0 1px 0 rgba(0,0,0,.3), 0 18px 40px -24px rgba(0,0,0,.7);
+    --bg: #0e1714; --surface: #15221d; --surface-2: #1b2b25; --ink: #e5f0eb; --muted: #97aba1; --line: #2a3d35;
+    --accent: #5fd0a8; --accent-ink: #0e1714; --accent-soft: #1c3b30;
+    --danger: #ff8a93; --danger-soft: #3a1c22; --alta: #ff8a93; --alta-soft: #3a1c22;
+    --media: #f2b75c; --media-soft: #3a2c14; --baixa: #7cc6e6; --baixa-soft: #16303d; --ok: #5fd0a8;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --paper: #13151b; --paper-2: #191c24; --card: #1d212b; --ink: #efeadf; --ink-2: #cfcabd; --muted: #9a9caa; --rule: #2d3240;
-  --indigo: #a9adff; --indigo-ink: #13151b; --indigo-soft: #262a4a; --mark: #d9b92e; --mark-ink: #1a1500;
-  --danger: #ff9b92; --danger-soft: #3b1d1b; --alta: #ff9b92; --alta-soft: #3b1d1b; --media: #f3c063; --media-soft: #3a2d12;
-  --baixa: #7fd0f0; --baixa-soft: #12303d; --ok: #74d6a3; --ok-soft: #153325;
-  --shadow: 0 1px 0 rgba(0,0,0,.3), 0 18px 40px -24px rgba(0,0,0,.7);
+  --bg: #0e1714; --surface: #15221d; --surface-2: #1b2b25; --ink: #e5f0eb; --muted: #97aba1; --line: #2a3d35;
+  --accent: #5fd0a8; --accent-ink: #0e1714; --accent-soft: #1c3b30;
+  --danger: #ff8a93; --danger-soft: #3a1c22; --alta: #ff8a93; --alta-soft: #3a1c22;
+  --media: #f2b75c; --media-soft: #3a2c14; --baixa: #7cc6e6; --baixa-soft: #16303d; --ok: #5fd0a8;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { margin: 0; }
-body {
-  background: var(--paper); color: var(--ink);
-  font: 400 15px/1.6 var(--f-sans);
-  min-height: 100vh;
-  /* Pauta discreta de caderno */
-  background-image: repeating-linear-gradient(to bottom, transparent 0 31px, color-mix(in srgb, var(--rule) 55%, transparent) 31px 32px);
-}
-.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.6 var(--font); min-height: 100vh; }
+.wrap { max-width: 720px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 button { font: inherit; cursor: pointer; }
-:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 2px; }
 
-/* Barra superior */
-.topbar { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
-.topbar-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; }
-.logo { display: flex; align-items: center; gap: 12px; min-width: 0; color: inherit; text-decoration: none; }
-.logo-mark { width: 38px; height: 38px; border-radius: 10px; background: var(--indigo); color: var(--indigo-ink); display: grid; place-items: center; flex: none; font: 700 20px/1 var(--f-serif); }
-.logo-txt { display: flex; flex-direction: column; min-width: 0; }
-.logo-txt b { font: 700 17px/1.1 var(--f-serif); }
-.logo-txt small { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.btn { border: 0; border-radius: 999px; padding: 11px 18px; font-weight: 600; font-size: 14.5px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--indigo); color: var(--indigo-ink); transition: transform .12s, box-shadow .12s; }
-.btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px -10px var(--indigo); }
-.btn[disabled] { opacity: .7; cursor: progress; transform: none; box-shadow: none; }
-.btn.line { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
-.btn.line:hover { background: var(--card); box-shadow: none; }
-.btn.mark { background: var(--mark); color: var(--mark-ink); }
-.top-duda .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px var(--ok-soft); }
-@media (max-width: 520px) { .logo-txt small { display: none; } .top-duda span.t { display: none; } .top-duda { padding: 10px 14px; } }
+/* Cabeçalho */
+.top { background: var(--accent); color: var(--accent-ink); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 56px; }
+.top b { font-size: 16px; font-weight: 700; }
+.top small { opacity: .85; font-size: 13px; margin-left: 8px; }
+@media (max-width: 560px) { .top small { display: none; } }
+.top button { background: transparent; color: inherit; border: 1.5px solid currentColor; border-radius: 999px; padding: 6px 14px; font-size: 13.5px; font-weight: 600; }
+.top button:hover { background: rgba(255,255,255,.14); }
 
 /* Abertura */
-.hero { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 40px; align-items: end; padding: 56px 0 36px; }
-@media (max-width: 860px) { .hero { grid-template-columns: minmax(0,1fr); gap: 28px; padding-top: 36px; } }
-.eyebrow { font: 700 12px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--indigo); margin: 0 0 18px; }
-h1 { font: 700 clamp(34px, 5.6vw, 60px)/1.02 var(--f-serif); letter-spacing: -.02em; margin: 0; text-wrap: balance; }
-h1 em { font-style: italic; font-weight: 500; }
-h1 .hl { background: linear-gradient(transparent 58%, var(--mark) 58% 92%, transparent 92%); padding: 0 .08em; color: inherit; }
-.lead { margin: 20px 0 0; font-size: 17px; color: var(--ink-2); max-width: 52ch; }
-.faq-box { background: var(--card); border: 1px solid var(--rule); border-radius: 18px; padding: 20px; box-shadow: var(--shadow); position: relative; }
-.faq-box::before { content: ""; position: absolute; top: -10px; left: 24px; width: 64px; height: 20px; background: color-mix(in srgb, var(--mark) 75%, transparent); transform: rotate(-3deg); border-radius: 2px; }
-.faq-box h2 { font: 600 18px/1.2 var(--f-serif); margin: 0 0 4px; }
-.faq-box p { margin: 0 0 14px; font-size: 13.5px; color: var(--muted); }
-.topics { display: flex; flex-wrap: wrap; gap: 8px; }
-.topic { border: 1.5px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 10px; padding: 8px 12px; font-size: 13.5px; font-weight: 500; text-align: left; transition: border-color .12s, background .12s; }
-.topic:hover { border-color: var(--indigo); background: var(--indigo-soft); }
+.intro { padding: 36px 0 20px; }
+h1 { font-size: clamp(26px, 4.4vw, 34px); line-height: 1.2; font-weight: 700; letter-spacing: -.01em; margin: 0 0 10px; }
+.lead { margin: 0; color: var(--muted); }
+.how { margin: 14px 0 0; font-size: 13.5px; color: var(--muted); }
+.how b { color: var(--accent); font-weight: 600; }
 
-/* Etapas */
-.steps { list-style: none; margin: 0 0 28px; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 0; border-top: 2px solid var(--ink); }
-.steps li { padding: 14px 16px 0 0; }
-.steps li + li { padding-left: 16px; border-left: 1px solid var(--rule); }
-.steps .num { font: 700 13px/1 var(--f-mono); color: var(--indigo); }
-.steps b { display: block; margin-top: 8px; font-size: 15px; }
-.steps p { margin: 2px 0 0; font-size: 13.5px; color: var(--muted); }
-@media (max-width: 760px) { .steps { grid-template-columns: repeat(2, minmax(0,1fr)); row-gap: 18px; } .steps li:nth-child(3) { padding-left: 0; border-left: 0; } }
-
-/* Painel do formulário */
-.sheet { background: var(--card); border: 1px solid var(--rule); border-radius: 22px; box-shadow: var(--shadow); overflow: hidden; }
-.sheet-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 22px 28px; border-bottom: 1px dashed var(--rule); }
-.sheet-head h2 { font: 700 24px/1.1 var(--f-serif); margin: 0; }
-.sheet-head span { font-size: 13px; color: var(--muted); }
-.sheet-body { padding: 26px 28px 28px; }
-@media (max-width: 520px) { .sheet-head, .sheet-body { padding-left: 18px; padding-right: 18px; } }
-form { display: flex; flex-direction: column; gap: 18px; }
-.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
-@media (max-width: 760px) { .grid3 { grid-template-columns: minmax(0,1fr); } }
+/* Cards */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+@media (max-width: 480px) { .card { padding: 18px; } }
+.card h2 { font-size: 18px; font-weight: 700; margin: 0 0 18px; }
+form { display: flex; flex-direction: column; gap: 16px; }
+.row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; }
+@media (max-width: 560px) { .row { grid-template-columns: minmax(0,1fr); } }
 .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 label { font-weight: 600; font-size: 13.5px; }
 label .req { color: var(--danger); }
 input, select, textarea {
-  font: inherit; color: var(--ink); background: var(--paper);
-  border: 0; border-bottom: 2px solid var(--rule); border-radius: 8px 8px 2px 2px; padding: 11px 12px; width: 100%;
-  transition: border-color .15s, background .15s;
+  font: inherit; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; width: 100%;
 }
-textarea { min-height: 150px; resize: vertical; line-height: 1.55; }
-input:focus, select:focus, textarea:focus { outline: none; border-bottom-color: var(--indigo); background: var(--indigo-soft); }
-.field.invalid input, .field.invalid select, .field.invalid textarea { border-bottom-color: var(--danger); background: var(--danger-soft); }
+textarea { min-height: 120px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.field.invalid input, .field.invalid select, .field.invalid textarea { border-color: var(--danger); }
 .hint { display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px; color: var(--muted); }
-.counter { font-family: var(--f-mono); white-space: nowrap; }
+.counter { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .counter.ok { color: var(--ok); }
+.sugestoes { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted); }
+.sugestoes button { border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 999px; padding: 4px 10px; font-size: 12.5px; }
+.sugestoes button:hover { border-color: var(--accent); color: var(--accent); }
 .err { font-size: 13px; color: var(--danger); }
 .err:empty { display: none; }
-.alert { border-radius: 12px; padding: 12px 14px; font-size: 14px; background: var(--danger-soft); color: var(--danger); border-left: 4px solid var(--danger); }
-.form-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 4px; }
-.privacy { font-size: 12.5px; color: var(--muted); max-width: 52ch; margin: 0; }
+.alert { border-radius: 8px; padding: 10px 12px; font-size: 14px; background: var(--danger-soft); color: var(--danger); }
+.btn { border: 0; border-radius: 8px; padding: 12px 18px; font-weight: 600; font-size: 14.5px; background: var(--accent); color: var(--accent-ink); display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.btn:hover { filter: brightness(1.07); }
+.btn[disabled] { opacity: .7; cursor: progress; }
+.btn.sec { background: transparent; color: var(--accent); border: 1px solid var(--line); }
+.privacy { font-size: 12.5px; color: var(--muted); margin: 0; }
 .spinner { width: 15px; height: 15px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* Resultado */
-.result-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-.result-top h2 { font: 700 28px/1.1 var(--f-serif); margin: 4px 0 0; }
-.ok-line { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: var(--ok); }
-.stamp { border: 2px dashed var(--indigo); color: var(--indigo); border-radius: 14px; padding: 10px 16px; transform: rotate(-1.5deg); text-align: center; }
-.stamp small { display: block; font: 700 10.5px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; }
-.stamp b { display: block; font: 700 clamp(18px, 3.6vw, 24px)/1.25 var(--f-mono); letter-spacing: .02em; margin-top: 4px; word-break: break-all; }
-.stamp span { display: block; font-size: 11.5px; margin-top: 2px; color: var(--muted); }
-.meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0; }
-.meta div { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 8px 12px; }
-.meta small { display: block; font: 700 10.5px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-.meta b { display: block; margin-top: 5px; font-size: 14.5px; }
-.chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font-weight: 700; font-size: 13px; }
-.chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.chip.alta { color: var(--alta); background: var(--alta-soft); }
-.chip.media { color: var(--media); background: var(--media-soft); }
-.chip.baixa { color: var(--baixa); background: var(--baixa-soft); }
-.chip.neutra { color: var(--muted); background: var(--paper-2); }
-.answer { position: relative; background: var(--paper); border-radius: 14px; padding: 18px 20px 18px 24px; }
-.answer::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 6px; border-radius: 0 4px 4px 0; background: var(--mark); }
-.answer small { display: block; font: 700 11px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--indigo); margin-bottom: 8px; }
-.answer p { margin: 0; font: 500 17px/1.55 var(--f-serif); white-space: pre-wrap; }
-.note { font-size: 13px; color: var(--muted); margin: 14px 0 20px; }
-.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.res-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.ok-line { display: flex; align-items: center; gap: 6px; color: var(--ok); font-weight: 600; font-size: 14px; }
+.proto { font: 700 20px/1.3 ui-monospace, "Cascadia Mono", Consolas, monospace; letter-spacing: .02em; word-break: break-all; margin-top: 2px; }
+.res-head small { color: var(--muted); font-size: 12.5px; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { font-size: 12.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); }
+.tag.alta { color: var(--alta); background: var(--alta-soft); border-color: transparent; }
+.tag.media { color: var(--media); background: var(--media-soft); border-color: transparent; }
+.tag.baixa { color: var(--baixa); background: var(--baixa-soft); border-color: transparent; }
+.resposta { background: var(--accent-soft); border-radius: 10px; padding: 14px 16px; margin: 0; white-space: pre-wrap; }
+.note { font-size: 13px; color: var(--muted); margin: 12px 0 16px; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .copy-msg { font-size: 13px; color: var(--ok); }
 
-/* Rodapé informativo */
-.info { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 28px; padding: 40px 0 56px; }
-@media (max-width: 760px) { .info { grid-template-columns: minmax(0,1fr); gap: 22px; } }
-.info h3 { font: 600 17px/1.2 var(--f-serif); margin: 0 0 8px; }
-.info p { margin: 0; font-size: 14px; color: var(--muted); }
-.legend { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
-footer { border-top: 1px solid var(--rule); padding: 18px 0 96px; font-size: 12.5px; color: var(--muted); }
+/* Legenda */
+.legenda { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12.5px; color: var(--muted); margin: 0 0 32px; }
+.legenda span::before { content: "●"; margin-right: 6px; }
+.legenda .a::before { color: var(--alta); } .legenda .m::before { color: var(--media); } .legenda .b::before { color: var(--baixa); }
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 0 16px 96px; }
 
-/* Botão flutuante da Duda */
-.duda-fab {
-  position: fixed; z-index: 45; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-  display: flex; align-items: center; gap: 10px; border: 0; border-radius: 999px; padding: 8px 18px 8px 8px;
-  background: var(--ink); color: var(--paper); box-shadow: 0 14px 30px -14px rgba(0,0,0,.6);
+/* Botão e janela da Duda */
+.duda-btn {
+  position: fixed; z-index: 50; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  border: 0; border-radius: 999px; padding: 12px 18px; background: var(--accent); color: var(--accent-ink);
+  font-weight: 600; font-size: 14.5px; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 20px -8px rgba(15,122,92,.6);
 }
-.duda-fab .av { width: 40px; height: 40px; border-radius: 50%; background: var(--mark); color: var(--mark-ink); display: grid; place-items: center; font: 700 20px/1 var(--f-serif); }
-.duda-fab .tx { display: flex; flex-direction: column; text-align: left; line-height: 1.2; }
-.duda-fab .tx b { font-size: 14.5px; }
-.duda-fab .tx small { font-size: 12px; opacity: .75; }
-@media (max-width: 420px) { .duda-fab .tx small { display: none; } }
-
-/* Gaveta do chat */
-.scrim { position: fixed; inset: 0; z-index: 55; background: rgba(15,17,24,.45); animation: fade .2s ease-out both; }
+.duda-btn svg { width: 18px; height: 18px; }
 .bot-panel {
-  position: fixed; z-index: 60; top: 0; right: 0; bottom: 0; width: min(430px, 100vw);
-  display: flex; flex-direction: column; background: var(--card); border-left: 1px solid var(--rule);
-  box-shadow: -24px 0 60px -30px rgba(0,0,0,.5); animation: slide .25s ease-out both;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  position: fixed; z-index: 60; display: flex; flex-direction: column; overflow: hidden;
+  right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  width: min(380px, calc(100vw - 32px)); height: min(560px, calc(100dvh - 40px));
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 20px 50px -20px rgba(19,38,31,.45);
 }
-@keyframes slide { from { transform: translateX(40px); opacity: .3; } to { transform: none; opacity: 1; } }
-@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-.bot-head { display: flex; align-items: center; gap: 12px; padding: 16px 16px 14px 20px; border-bottom: 1px solid var(--rule); }
-.bot-head .av { width: 42px; height: 42px; border-radius: 12px; background: var(--mark); color: var(--mark-ink); display: grid; place-items: center; font: 700 22px/1 var(--f-serif); flex: none; }
-.bot-title { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-.bot-title b { font: 700 18px/1.15 var(--f-serif); }
-.bot-title span { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.icon-btn { border: 0; background: transparent; color: var(--ink-2); border-radius: 10px; padding: 7px 10px; font-size: 13px; font-weight: 600; }
-.icon-btn:hover { background: var(--paper-2); }
-.bot-close { font-size: 22px; line-height: 1; width: 38px; height: 38px; padding: 0; }
-
-.bot-ident { padding: 22px 20px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; flex: 1; }
-.bot-ident p.hello { font: 500 19px/1.4 var(--f-serif); margin: 0; color: var(--ink); }
-.bot-ident ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
-.bot-ident li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--ink-2); }
-.bot-ident li::before { content: "→"; color: var(--indigo); font-weight: 700; }
+@media (max-width: 480px) { .bot-panel { right: 0; left: 0; bottom: 0; width: auto; height: 100dvh; border-radius: 0; border: 0; } }
+.bot-head { display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 16px; background: var(--accent); color: var(--accent-ink); }
+.bot-title { display: flex; flex-direction: column; min-width: 0; flex: 1; line-height: 1.25; }
+.bot-title b { font-size: 15px; }
+.bot-title span { font-size: 12px; opacity: .85; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bot-head button { background: transparent; color: inherit; border: 0; border-radius: 6px; padding: 6px 8px; font-size: 12.5px; font-weight: 600; }
+.bot-head button:hover { background: rgba(255,255,255,.16); }
+.bot-close { font-size: 20px !important; line-height: 1; }
+.bot-ident { padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; }
 .bot-ident p { margin: 0; font-size: 14px; color: var(--muted); }
-.bot-ident form { gap: 12px; background: var(--paper); border-radius: 14px; padding: 16px; }
-
-.bot-log { flex: 1; overflow-y: auto; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; background: var(--paper); }
-.msg { max-width: 88%; padding: 10px 14px; border-radius: 16px; font-size: 14.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
-.msg.bot { align-self: flex-start; background: var(--card); border: 1px solid var(--rule); border-top-left-radius: 4px; }
-.msg.user { align-self: flex-end; background: var(--indigo); color: var(--indigo-ink); border-top-right-radius: 4px; }
-.msg.erro { align-self: stretch; max-width: none; background: var(--danger-soft); color: var(--danger); border-radius: 12px; }
-.msg-tag { display: inline-block; margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--mark-ink); background: var(--mark); border-radius: 6px; padding: 2px 8px; }
-.status-line { align-self: center; font: 700 11px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.bot-ident p.hello { color: var(--ink); font-weight: 600; }
+.bot-ident form { gap: 12px; }
+.bot-log { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; background: var(--surface-2); }
+.msg { max-width: 85%; padding: 9px 12px; border-radius: 12px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg.bot { align-self: flex-start; background: var(--surface); border: 1px solid var(--line); }
+.msg.user { align-self: flex-end; background: var(--accent); color: var(--accent-ink); }
+.msg.erro { align-self: stretch; max-width: none; background: var(--danger-soft); color: var(--danger); }
+.msg-tag { display: block; margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--ok); }
+.status-line { align-self: center; font-size: 12px; color: var(--muted); }
 .typing { display: inline-flex; gap: 4px; }
-.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: blink 1.2s infinite ease-in-out; }
+.typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: blink 1.2s infinite ease-in-out; }
 .typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
 @keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
-.bot-opcoes { display: flex; gap: 6px; padding: 10px 12px 0; overflow-x: auto; border-top: 1px solid var(--rule); background: var(--card); scrollbar-width: none; }
-.bot-opcoes button { flex: none; border: 1.5px solid var(--rule); background: var(--card); color: var(--ink); border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; }
-.bot-opcoes button:hover { border-color: var(--indigo); color: var(--indigo); }
-.bot-compose { display: flex; flex-direction: row; align-items: flex-end; gap: 8px; padding: 10px 12px; background: var(--card); }
-.bot-compose textarea { flex: 1; min-width: 0; min-height: 44px; max-height: 120px; resize: none; font-size: 14.5px; border-radius: 12px; border: 1.5px solid var(--rule); background: var(--paper); }
-.bot-compose textarea:focus { border-color: var(--indigo); }
-.bot-compose .btn { width: 46px; height: 44px; padding: 0; border-radius: 12px; flex: none; }
-.bot-compose .btn svg { width: 20px; height: 20px; }
-.bot-aviso { margin: 0; padding: 0 14px 12px; font-size: 11.5px; color: var(--muted); background: var(--card); }
-
-@media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
+.bot-opcoes { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 10px 0; border-top: 1px solid var(--line); background: var(--surface); }
+.bot-opcoes button { flex: none; border: 1px solid var(--line); background: var(--surface); color: var(--accent); border-radius: 999px; padding: 5px 11px; font-size: 12.5px; font-weight: 600; }
+.bot-compose { display: flex; flex-direction: row; align-items: flex-end; gap: 8px; padding: 10px; background: var(--surface); }
+.bot-compose textarea { flex: 1; width: auto; min-width: 0; min-height: 42px; max-height: 110px; resize: none; font-size: 14px; }
+.bot-compose .btn { width: 44px; height: 42px; padding: 0; flex: none; }
+.bot-compose .btn svg { width: 18px; height: 18px; }
+.bot-aviso { margin: 0; padding: 0 12px 10px; font-size: 11.5px; color: var(--muted); background: var(--surface); }
+@media (prefers-reduced-motion: reduce) { .spinner, .typing i { animation: none; } }
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="wrap topbar-in">
-    <a class="logo" href="#topo" aria-label="Central de Dúvidas, início">
-      <span class="logo-mark" aria-hidden="true">?</span>
-      <span class="logo-txt"><b>Central de Dúvidas</b><small>Tendências em Ciência da Computação</small></span>
-    </a>
-    <button type="button" class="btn line top-duda" id="top-duda"><span class="dot" aria-hidden="true"></span><span class="t">Falar com a&nbsp;</span>Duda</button>
+<header class="top">
+  <div class="wrap">
+    <div><b>Central de Dúvidas</b><small>Tendências em Ciência da Computação</small></div>
+    <button type="button" id="top-duda">Falar com a Duda</button>
   </div>
 </header>
 
-<main class="wrap" id="topo">
-  <section class="hero">
-    <div>
-      <p class="eyebrow">Unidade 4 · Atendimento com IA</p>
-      <h1>Pergunte. A gente <span class="hl">responde</span> e você <em>acompanha.</em></h1>
-      <p class="lead">Envie sua dúvida sobre a disciplina e receba uma resposta na hora, baseada na FAQ oficial. Se a IA não souber, a equipe assume, e a Duda te conta cada novidade.</p>
-    </div>
-    <aside class="faq-box" aria-labelledby="faq-titulo">
-      <h2 id="faq-titulo">Dúvidas mais comuns</h2>
-      <p>Clique em uma delas para começar o formulário já preenchido.</p>
-      <div class="topics" id="topics">
-        <button type="button" class="topic" data-texto="Qual é o prazo de entrega do trabalho final?">Prazo do trabalho final</button>
-        <button type="button" class="topic" data-texto="Como o trabalho final é avaliado? Quais são os critérios?">Critérios de avaliação</button>
-        <button type="button" class="topic" data-texto="Quantas pessoas podem fazer parte do grupo? Posso fazer sozinho?">Tamanho do grupo</button>
-        <button type="button" class="topic" data-texto="Não consigo entrar no AVA. O que devo fazer?">Acesso ao AVA</button>
-        <button type="button" class="topic" data-texto="Quanto custa a prova de segunda chamada e como pago?">Segunda chamada</button>
-        <button type="button" class="topic" data-texto="Quando acontece a Semana de Tecnologia e como me inscrevo?">Semana de Tecnologia</button>
-      </div>
-    </aside>
+<main class="wrap">
+  <section class="intro">
+    <h1>Tem uma dúvida sobre a disciplina?</h1>
+    <p class="lead">Envie abaixo. A IA responde na hora com base na FAQ da disciplina e, quando não sabe, encaminha para a equipe.</p>
+    <p class="how"><b>1.</b> Você envia · <b>2.</b> A IA responde e registra · <b>3.</b> Você acompanha com a Duda</p>
   </section>
 
-  <ol class="steps" aria-label="Como funciona">
-    <li><span class="num">01</span><b>Você pergunta</b><p>Nome, e-mail, curso e a dúvida.</p></li>
-    <li><span class="num">02</span><b>A IA faz a triagem</b><p>Categoria, urgência e resposta pela FAQ.</p></li>
-    <li><span class="num">03</span><b>Tudo fica registrado</b><p>Planilha, e-mail para você e alerta à equipe.</p></li>
-    <li><span class="num">04</span><b>A Duda acompanha</b><p>Status e novidades pelo chat.</p></li>
-  </ol>
-
-  <section class="sheet" aria-live="polite">
+  <section class="card" aria-live="polite">
     <div id="view-form">
-      <div class="sheet-head"><h2>Nova dúvida</h2><span>Campos com <span style="color:var(--danger)">*</span> são obrigatórios</span></div>
-      <div class="sheet-body">
-        <form id="form-duvida" novalidate>
-          <div class="grid3">
-            <div class="field" id="f-nome">
-              <label for="nome">Nome completo <span class="req">*</span></label>
-              <input id="nome" name="nome" type="text" autocomplete="name" placeholder="Maria da Silva" maxlength="120">
-              <div class="err" id="e-nome"></div>
-            </div>
-            <div class="field" id="f-email">
-              <label for="email">E-mail <span class="req">*</span></label>
-              <input id="email" name="email" type="email" autocomplete="email" placeholder="nome@exemplo.com" maxlength="160">
-              <div class="err" id="e-email"></div>
-            </div>
-            <div class="field" id="f-curso">
-              <label for="curso">Curso <span class="req">*</span></label>
-              <select id="curso" name="curso">
-                <option value="" selected disabled>Selecione</option>
-                <option>Ciência da Computação</option>
-                <option>Sistemas de Informação</option>
-                <option>Engenharia de Software</option>
-                <option>Análise e Desenvolvimento de Sistemas</option>
-                <option>Outro</option>
-              </select>
-              <div class="err" id="e-curso"></div>
-            </div>
+      <h2>Nova dúvida</h2>
+      <form id="form-duvida" novalidate>
+        <div class="row">
+          <div class="field" id="f-nome">
+            <label for="nome">Nome completo <span class="req">*</span></label>
+            <input id="nome" name="nome" type="text" autocomplete="name" placeholder="Maria da Silva" maxlength="120">
+            <div class="err" id="e-nome"></div>
           </div>
-          <div class="field" id="f-duvida">
-            <label for="duvida">Sua dúvida <span class="req">*</span></label>
-            <textarea id="duvida" name="duvida" maxlength="1000" placeholder="Escreva com suas palavras. Ex.: Qual é o prazo de entrega do trabalho final? Pode ser feito em grupo?"></textarea>
-            <div class="hint"><span>Uma pergunta clara recebe uma resposta melhor.</span><span class="counter" id="contador">0 / mín. 10</span></div>
-            <div class="err" id="e-duvida"></div>
+          <div class="field" id="f-email">
+            <label for="email">E-mail <span class="req">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="nome@exemplo.com" maxlength="160">
+            <div class="err" id="e-email"></div>
           </div>
-          <div class="alert" id="alerta" hidden></div>
-          <div class="form-foot">
-            <p class="privacy">Não informe senhas nem documentos. Seus dados são usados apenas para responder à dúvida.</p>
-            <button type="submit" class="btn" id="btn-enviar"><span id="btn-texto">Enviar dúvida</span></button>
+        </div>
+        <div class="field" id="f-curso">
+          <label for="curso">Curso <span class="req">*</span></label>
+          <select id="curso" name="curso">
+            <option value="" selected disabled>Selecione o seu curso</option>
+            <option>Ciência da Computação</option>
+            <option>Sistemas de Informação</option>
+            <option>Engenharia de Software</option>
+            <option>Análise e Desenvolvimento de Sistemas</option>
+            <option>Outro</option>
+          </select>
+          <div class="err" id="e-curso"></div>
+        </div>
+        <div class="field" id="f-duvida">
+          <label for="duvida">Sua dúvida <span class="req">*</span></label>
+          <textarea id="duvida" name="duvida" maxlength="1000" placeholder="Ex.: Qual é o prazo de entrega do trabalho final?"></textarea>
+          <div class="hint"><span>Mínimo de 10 caracteres.</span><span class="counter" id="contador">0 / 1000</span></div>
+          <div class="sugestoes" id="sugestoes">Sugestões:
+            <button type="button" data-texto="Qual é o prazo de entrega do trabalho final?">Prazo do trabalho</button>
+            <button type="button" data-texto="Como o trabalho final é avaliado?">Avaliação</button>
+            <button type="button" data-texto="Não consigo entrar no AVA. O que devo fazer?">Acesso ao AVA</button>
+            <button type="button" data-texto="Quanto custa a prova de segunda chamada?">Segunda chamada</button>
           </div>
-        </form>
-      </div>
+          <div class="err" id="e-duvida"></div>
+        </div>
+        <div class="alert" id="alerta" hidden></div>
+        <div><button type="submit" class="btn" id="btn-enviar"><span id="btn-texto">Enviar dúvida</span></button></div>
+        <p class="privacy">Não informe senhas nem documentos. Seus dados são usados apenas para responder à dúvida.</p>
+      </form>
     </div>
 
     <div id="view-ok" hidden>
-      <div class="sheet-body">
-        <div class="result-top">
-          <div>
-            <span class="ok-line"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Dúvida registrada</span>
-            <h2>Aqui está a sua resposta</h2>
-          </div>
-          <div class="stamp"><small>Protocolo</small><b id="r-protocolo">DV-00000000-XXXX</b><span id="r-data"></span></div>
+      <div class="res-head">
+        <div>
+          <span class="ok-line"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Dúvida registrada</span>
+          <div class="proto" id="r-protocolo">DV-00000000-XXXX</div>
+          <small id="r-data"></small>
         </div>
-        <div class="meta">
-          <div><small>Categoria</small><b id="r-categoria"></b></div>
-          <div><small>Urgência</small><b><span class="chip" id="r-urgencia"></span></b></div>
-          <div><small>Status</small><b id="r-status"></b></div>
+        <div class="tags">
+          <span class="tag" id="r-categoria"></span>
+          <span class="tag" id="r-urgencia"></span>
+          <span class="tag" id="r-status"></span>
         </div>
-        <div class="answer"><small>Resposta da Central</small><p id="r-resposta"></p></div>
-        <p class="note" id="r-nota">Você também receberá esta resposta por e-mail. Guarde o protocolo para conversar com a Duda.</p>
-        <div class="actions">
-          <button type="button" class="btn mark" id="btn-chat">Acompanhar com a Duda</button>
-          <button type="button" class="btn line" id="btn-copiar">Copiar protocolo</button>
-          <button type="button" class="btn line" id="btn-novo">Enviar outra dúvida</button>
-          <span class="copy-msg" id="copy-msg" hidden>Protocolo copiado.</span>
-        </div>
+      </div>
+      <p class="resposta" id="r-resposta"></p>
+      <p class="note" id="r-nota">Você também receberá esta resposta por e-mail. Guarde o protocolo para conversar com a Duda.</p>
+      <div class="actions">
+        <button type="button" class="btn" id="btn-chat">Acompanhar com a Duda</button>
+        <button type="button" class="btn sec" id="btn-copiar">Copiar protocolo</button>
+        <button type="button" class="btn sec" id="btn-novo">Enviar outra dúvida</button>
+        <span class="copy-msg" id="copy-msg" hidden>Protocolo copiado.</span>
       </div>
     </div>
   </section>
 
-  <section class="info">
-    <div>
-      <h3>Como a urgência é definida</h3>
-      <div class="legend">
-        <span class="chip alta">Alta: impede a entrega ou o acesso</span>
-        <span class="chip media">Média: prazos e avaliação</span>
-        <span class="chip baixa">Baixa: informativa</span>
-      </div>
-    </div>
-    <div>
-      <h3>Quando a IA não sabe</h3>
-      <p>Ela não inventa. A dúvida vai para revisão da equipe da disciplina, que é avisada por e-mail e responde pela planilha.</p>
-    </div>
-    <div>
-      <h3>Seus dados</h3>
-      <p>Usados só para o atendimento. O chat exige protocolo e e-mail, e a IA nunca vê dúvidas de outros alunos.</p>
-    </div>
-  </section>
+  <p class="legenda">Urgência: <span class="a">Alta: impede a entrega ou o acesso</span><span class="m">Média: prazos e avaliação</span><span class="b">Baixa: informativa</span></p>
 </main>
 
-<footer>
-  <div class="wrap">Projeto acadêmico · Tendências em Ciência da Computação · Unidade 4. Respostas geradas com apoio de IA.</div>
-</footer>
+<footer>Projeto acadêmico · Tendências em Ciência da Computação · Unidade 4 · Respostas geradas com apoio de IA</footer>
 
-<button type="button" class="duda-fab" id="bot-btn" aria-label="Abrir a assistente Duda" aria-expanded="false" aria-controls="bot-panel">
-  <span class="av" aria-hidden="true">D</span>
-  <span class="tx"><b>Falar com a Duda</b><small>Acompanhe sua dúvida</small></span>
+<button type="button" class="duda-btn" id="bot-btn" aria-expanded="false" aria-controls="bot-panel">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4V5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  Falar com a Duda
 </button>
 
-<div class="scrim" id="bot-scrim" hidden></div>
-<aside class="bot-panel" id="bot-panel" role="dialog" aria-modal="true" aria-labelledby="bot-nome" hidden>
+<section class="bot-panel" id="bot-panel" role="dialog" aria-labelledby="bot-nome" hidden>
   <header class="bot-head">
-    <span class="av" aria-hidden="true">D</span>
     <div class="bot-title">
       <b id="bot-nome">Duda</b>
       <span id="bot-sub">Assistente virtual com IA</span>
     </div>
-    <button type="button" class="icon-btn" id="bot-trocar" hidden>Trocar dúvida</button>
-    <button type="button" class="icon-btn bot-close" id="bot-close" aria-label="Fechar a assistente">×</button>
+    <button type="button" id="bot-trocar" hidden>Trocar dúvida</button>
+    <button type="button" class="bot-close" id="bot-close" aria-label="Fechar a assistente">×</button>
   </header>
 
   <div class="bot-ident" id="bot-ident">
     <p class="hello">Oi! Eu sou a Duda, assistente virtual da Central de Dúvidas.</p>
-    <ul>
-      <li>Conto como está o andamento da sua dúvida.</li>
-      <li>Respondo perguntas sobre prazos, avaliação e entrega.</li>
-      <li>Registro novas informações para a equipe.</li>
-    </ul>
-    <p>Para começar, informe o protocolo e o e-mail usado no envio.</p>
+    <p>Conto como está a sua dúvida, respondo perguntas sobre prazos, avaliação e entrega e registro novas informações para a equipe.</p>
+    <p>Informe o protocolo e o e-mail usado no envio:</p>
     <form id="bot-form-ident" novalidate>
       <div class="field" id="f-bot-protocolo">
         <label for="bot-protocolo">Protocolo</label>
         <input id="bot-protocolo" type="text" placeholder="DV-20261126-K7QZ" maxlength="16" autocomplete="off" spellcheck="false">
       </div>
       <div class="field" id="f-bot-email">
-        <label for="bot-email">E-mail usado no envio</label>
+        <label for="bot-email">E-mail</label>
         <input id="bot-email" type="email" placeholder="nome@exemplo.com" maxlength="160" autocomplete="email">
       </div>
       <div class="alert" id="bot-ident-erro" hidden></div>
@@ -412,9 +295,9 @@ footer { border-top: 1px solid var(--rule); padding: 18px 0 96px; font-size: 12.
   <div class="bot-log" id="bot-log" aria-live="polite" hidden></div>
   <div class="bot-opcoes" id="bot-opcoes" hidden>
     <button type="button" data-msg="Qual é o andamento da minha dúvida?">Andamento</button>
-    <button type="button" data-msg="A resposta resolveu a minha dúvida. Obrigado!">Resolveu, obrigado</button>
+    <button type="button" data-msg="A resposta resolveu a minha dúvida. Obrigado!">Resolveu</button>
     <button type="button" data-msg="A resposta não resolveu a minha dúvida.">Não resolveu</button>
-    <button type="button" data-foco="1">Enviar nova informação</button>
+    <button type="button" data-foco="1">Nova informação</button>
   </div>
   <form class="bot-compose" id="bot-compose" hidden>
     <textarea id="bot-msg" aria-label="Mensagem para a Duda" rows="1" maxlength="1000" placeholder="Escreva sua mensagem..."></textarea>
@@ -423,7 +306,7 @@ footer { border-top: 1px solid var(--rule); padding: 18px 0 96px; font-size: 12.
     </button>
   </form>
   <p class="bot-aviso" id="bot-aviso" hidden>Respostas geradas com IA. Não envie senhas nem dados pessoais.</p>
-</aside>
+</section>
 
 <script>
 /* Endereços de produção dos webhooks no n8n (Production URLs dos nós Webhook). */
@@ -463,7 +346,7 @@ window.CONFIG_CENTRAL = {
   }
   function atualizarContador() {
     var n = campos.duvida.value.trim().length;
-    contador.textContent = n + (n >= MIN_DUVIDA ? " / 1000" : " / mín. " + MIN_DUVIDA);
+    contador.textContent = n + " / 1000";
     contador.classList.toggle("ok", n >= MIN_DUVIDA);
     if (n >= MIN_DUVIDA) setErro("duvida", "");
   }
@@ -472,16 +355,13 @@ window.CONFIG_CENTRAL = {
     campos[k].addEventListener("input", function () { setErro(k, ""); });
   });
 
-  /* Dúvidas mais comuns: preenchem o formulário */
-  document.getElementById("topics").addEventListener("click", function (ev) {
-    var b = ev.target.closest(".topic");
+  /* Sugestões de dúvidas comuns */
+  document.getElementById("sugestoes").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button");
     if (!b) return;
-    document.getElementById("view-ok").hidden = true;
-    document.getElementById("view-form").hidden = false;
     campos.duvida.value = b.getAttribute("data-texto");
     atualizarContador();
-    document.querySelector(".sheet").scrollIntoView({ behavior: "smooth", block: "start" });
-    (campos.nome.value ? campos.duvida : campos.nome).focus({ preventScroll: true });
+    campos.duvida.focus();
   });
 
   function validar(d) {
@@ -508,16 +388,15 @@ window.CONFIG_CENTRAL = {
     document.getElementById("r-status").textContent = r.status || "-";
     var u = document.getElementById("r-urgencia");
     var urg = r.urgencia || "Média";
-    u.textContent = urg;
-    u.className = "chip " + ({ "Alta": "alta", "Média": "media", "Baixa": "baixa" }[urg] || "neutra");
+    u.textContent = "Urgência " + urg;
+    u.className = "tag " + ({ "Alta": "alta", "Média": "media", "Baixa": "baixa" }[urg] || "");
     document.getElementById("r-resposta").textContent = String(r.resposta || "A equipe da disciplina analisará sua dúvida em breve.").replace(/\\+"/g, '"');
     document.getElementById("r-nota").textContent = (r.classificado_por_ia === false
       ? "A resposta automática não estava disponível, então sua dúvida foi encaminhada para a equipe. "
       : "") + "Você também receberá esta resposta por e-mail. Guarde o protocolo para conversar com a Duda.";
     document.getElementById("view-form").hidden = true;
     document.getElementById("view-ok").hidden = false;
-    document.querySelector(".sheet").scrollIntoView({ behavior: "smooth", block: "start" });
-    document.getElementById("btn-chat").focus({ preventScroll: true });
+    document.getElementById("btn-chat").focus();
   }
 
   form.addEventListener("submit", function (ev) {
@@ -580,7 +459,7 @@ window.CONFIG_CENTRAL = {
 
   document.getElementById("btn-novo").addEventListener("click", function () {
     form.reset(); limparErros();
-    contador.textContent = "0 / mín. " + MIN_DUVIDA; contador.classList.remove("ok");
+    contador.textContent = "0 / 1000"; contador.classList.remove("ok");
     document.getElementById("copy-msg").hidden = true;
     document.getElementById("view-ok").hidden = true;
     document.getElementById("view-form").hidden = false;
@@ -615,7 +494,7 @@ window.CONFIG_CENTRAL = {
   var PRIMEIRA_PERGUNTA = "Qual é o andamento da minha dúvida?";
 
   var $ = function (id) { return document.getElementById(id); };
-  var btn = $("bot-btn"), panel = $("bot-panel"), scrim = $("bot-scrim");
+  var btn = $("bot-btn"), panel = $("bot-panel");
   var ident = $("bot-ident"), formIdent = $("bot-form-ident"), identErro = $("bot-ident-erro"), identBtn = $("bot-ident-btn");
   var inProto = $("bot-protocolo"), inEmail = $("bot-email");
   var log = $("bot-log"), opcoes = $("bot-opcoes"), compose = $("bot-compose"), inMsg = $("bot-msg"), sendBtn = $("bot-send");
@@ -623,7 +502,6 @@ window.CONFIG_CENTRAL = {
 
   var sessao = null;      /* { protocolo, email, sessionId } */
   var enviando = false;
-  var origemFoco = null;
 
   function novoId() {
     try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
@@ -631,9 +509,7 @@ window.CONFIG_CENTRAL = {
   }
 
   function abrir() {
-    origemFoco = document.activeElement;
-    panel.hidden = false; scrim.hidden = false; btn.hidden = true; btn.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
+    panel.hidden = false; btn.hidden = true; btn.setAttribute("aria-expanded", "true");
     if (!sessao) {
       var u = window.ultimaDuvida;
       if (u && !inProto.value) { inProto.value = u.protocolo || ""; inEmail.value = u.email || ""; }
@@ -641,14 +517,9 @@ window.CONFIG_CENTRAL = {
     } else { inMsg.focus(); }
   }
   window.abrirDuda = abrir;
-  function fechar() {
-    panel.hidden = true; scrim.hidden = true; btn.hidden = false; btn.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
-    (origemFoco && origemFoco.focus ? origemFoco : btn).focus();
-  }
+  function fechar() { panel.hidden = true; btn.hidden = false; btn.setAttribute("aria-expanded", "false"); btn.focus(); }
   btn.addEventListener("click", abrir);
   $("top-duda").addEventListener("click", abrir);
-  scrim.addEventListener("click", fechar);
   $("bot-close").addEventListener("click", fechar);
   document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && !panel.hidden) fechar(); });
 
@@ -658,7 +529,7 @@ window.CONFIG_CENTRAL = {
     el.className = "msg " + tipo;
     /* O modelo às vezes devolve aspas escapadas (\"Respondida\"); mostra só as aspas. */
     el.textContent = String(texto || "").replace(/\\+"/g, '"');
-    if (tag) { el.appendChild(document.createElement("br")); var t = document.createElement("span"); t.className = "msg-tag"; t.textContent = tag; el.appendChild(t); }
+    if (tag) { var t = document.createElement("span"); t.className = "msg-tag"; t.textContent = tag; el.appendChild(t); }
     log.appendChild(el); log.scrollTop = log.scrollHeight;
     return el;
   }
@@ -728,7 +599,7 @@ window.CONFIG_CENTRAL = {
       var linha = document.createElement("div"); linha.className = "status-line";
       linha.textContent = "Conversa sobre " + protocolo; log.appendChild(linha);
       addMsg("user", PRIMEIRA_PERGUNTA);
-      addMsg("bot", r.resposta || "Encontrei a sua dúvida. Como posso ajudar?", r.registrado ? "Registrado para a equipe" : "");
+      addMsg("bot", r.resposta || "Encontrei a sua dúvida. Como posso ajudar?", r.registrado ? "Informação registrada para a equipe" : "");
       inMsg.focus();
     });
   });
@@ -743,7 +614,7 @@ window.CONFIG_CENTRAL = {
     chamar(texto).then(function (r) {
       dig.remove(); travar(false);
       if (r.sucesso === true) {
-        addMsg("bot", r.resposta || "Certo.", r.registrado ? "Registrado para a equipe" : "");
+        addMsg("bot", r.resposta || "Certo.", r.registrado ? "Informação registrada para a equipe" : "");
         if (r.status) sub.textContent = sessao.protocolo + " · " + r.status;
       } else {
         addMsg("erro", textoErro(r));
@@ -758,10 +629,10 @@ window.CONFIG_CENTRAL = {
   inMsg.addEventListener("keydown", function (ev) {
     if (ev.key === "Enter" && !ev.shiftKey) { ev.preventDefault(); compose.requestSubmit ? compose.requestSubmit() : compose.dispatchEvent(new Event("submit")); }
   });
-  function ajustarAltura() { inMsg.style.height = "auto"; inMsg.style.height = Math.min(inMsg.scrollHeight, 120) + "px"; }
+  function ajustarAltura() { inMsg.style.height = "auto"; inMsg.style.height = Math.min(inMsg.scrollHeight, 110) + "px"; }
   inMsg.addEventListener("input", ajustarAltura);
 
-  /* Menu de opções rápidas */
+  /* Opções rápidas */
   opcoes.addEventListener("click", function (ev) {
     var b = ev.target.closest("button");
     if (!b) return;
