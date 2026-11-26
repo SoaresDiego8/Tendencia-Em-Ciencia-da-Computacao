@@ -8,7 +8,7 @@
         "width": 700,
         "color": 5
       },
-      "id": "a0f13193-4fe2-42f1-a0bb-f5abb8cd35d6",
+      "id": "302b467e-c077-425f-a120-55e3488b61e9",
       "name": "Nota 1",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -24,7 +24,7 @@
         "width": 620,
         "color": 6
       },
-      "id": "d1626237-06e1-45af-ad94-a13b944c061e",
+      "id": "a987532f-6adf-4c0c-a732-4e2fb22c8b74",
       "name": "Nota 2",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -40,7 +40,7 @@
         "width": 300,
         "color": 4
       },
-      "id": "385b690e-a2cc-4202-b0a1-a49897f3c587",
+      "id": "6973a22f-f6e3-4e1d-9138-4f122f8a4b4a",
       "name": "Nota 3",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -56,7 +56,7 @@
         "width": 760,
         "color": 3
       },
-      "id": "5b1efb4d-8240-4927-a98f-1d307b31b38b",
+      "id": "9afd117f-1258-4e3a-9324-874b022e1912",
       "name": "Nota 4",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -74,7 +74,7 @@
           "allowedOrigins": "*"
         }
       },
-      "id": "8ad3b936-fc21-41fb-a720-2561a13c2552",
+      "id": "f9d19e36-0638-4900-bc69-9af596f5d4be",
       "name": "Receber Dúvida da Página",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
@@ -82,14 +82,14 @@
         0,
         300
       ],
-      "webhookId": "7fdd000f-9728-4353-b9a2-0fce21fe1578"
+      "webhookId": "5019ddd9-572c-4aef-b37c-6e0a597240ee"
     },
     {
       "parameters": {
         "mode": "runOnceForEachItem",
         "jsCode": "// Validação no servidor: a página também valida, mas a validação do navegador pode ser contornada.\nconst b = $json.body || {};\nconst limpar = (v) => String(v ?? '').replace(/\\s+/g, ' ').trim();\nconst nome = limpar(b.nome).slice(0, 120);\nconst email = limpar(b.email).toLowerCase().slice(0, 160);\nconst curso = limpar(b.curso);\nconst duvida = String(b.duvida ?? '').trim().slice(0, 1000);\nconst CURSOS = ['Ciência da Computação', 'Sistemas de Informação', 'Engenharia de Software', 'Análise e Desenvolvimento de Sistemas', 'Outro'];\n\nconst erros = {};\nif (nome.length < 3) erros.nome = 'Informe o nome completo (mínimo de 3 caracteres).';\nif (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(email)) erros.email = 'E-mail em formato inválido.';\nif (!CURSOS.includes(curso)) erros.curso = 'Curso inválido.';\nif (duvida.length < 10) erros.duvida = 'A dúvida precisa ter pelo menos 10 caracteres.';\n\n// Protocolo DV-AAAAMMDD-XXXX, sem caracteres ambíguos (O/0, I/1).\nconst agora = DateTime.now().setZone('America/Sao_Paulo');\nconst ALFA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';\nlet sufixo = '';\nfor (let i = 0; i < 4; i++) sufixo += ALFA[Math.floor(Math.random() * ALFA.length)];\n\nreturn {\n  json: {\n    valido: Object.keys(erros).length === 0,\n    erros,\n    mensagem: 'Confira os campos destacados e envie novamente.',\n    nome, email, curso, duvida,\n    // Cópia da dúvida usada no prompt: chaves viram parênteses para não quebrar o template da IA.\n    duvida_ia: duvida.replace(/[{}]/g, (c) => (c === '{' ? '(' : ')')),\n    protocolo: `DV-${agora.toFormat('yyyyMMdd')}-${sufixo}`,\n    data_abertura: agora.toFormat('dd/MM/yyyy HH:mm'),\n  },\n};"
       },
-      "id": "7d84af45-9770-441c-a53f-5e179a5b696e",
+      "id": "20ae7299-8a57-4689-a0c3-65929e606d95",
       "name": "Validar e Normalizar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -109,7 +109,7 @@
           },
           "conditions": [
             {
-              "id": "0259df8d-579a-4ca4-9429-ad273505ab7e",
+              "id": "ab435182-f98f-46d4-a95a-e244f6e66549",
               "leftValue": "={{ $json.valido }}",
               "rightValue": "",
               "operator": {
@@ -123,7 +123,7 @@
         },
         "options": {}
       },
-      "id": "db5217a9-e1ff-4469-a957-5c1f876f790e",
+      "id": "543ac47a-5614-4f33-9eeb-ebfff72b1309",
       "name": "Dados Válidos?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -140,7 +140,7 @@
           "responseCode": 422
         }
       },
-      "id": "c49a79ab-45ca-4dcd-9ca0-a999bb264f9b",
+      "id": "bdc37a10-252e-4ce5-a2e5-ddba9ec0377e",
       "name": "Responder Erro de Validação",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
@@ -162,7 +162,7 @@
           ]
         }
       },
-      "id": "0931af22-1e4f-49bc-871f-7a8561aa6a26",
+      "id": "eec32bb9-d96c-49de-80b2-6482dddb93b2",
       "name": "Classificar e Responder com IA",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
@@ -179,7 +179,7 @@
           "temperature": 0.2
         }
       },
-      "id": "bbaab055-0b76-4858-8a98-e0ccaa579636",
+      "id": "6738078a-2ea5-4d43-aa0c-0e52f74381bf",
       "name": "Modelo Gemini (Triagem)",
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
@@ -193,7 +193,7 @@
         "schemaType": "manual",
         "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"categoria\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Acadêmico\",\n        \"Técnico\",\n        \"Financeiro\",\n        \"Outro\",\n        \"Revisão manual\"\n      ]\n    },\n    \"urgencia\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Baixa\",\n        \"Média\",\n        \"Alta\"\n      ]\n    },\n    \"resumo\": {\n      \"type\": \"string\",\n      \"description\": \"Uma frase curta descrevendo a dúvida\"\n    },\n    \"resposta\": {\n      \"type\": \"string\",\n      \"description\": \"Resposta ao aluno baseada somente na base de conhecimento\"\n    }\n  },\n  \"required\": [\n    \"categoria\",\n    \"urgencia\",\n    \"resumo\",\n    \"resposta\"\n  ]\n}"
       },
-      "id": "a0d8eb11-6c7d-4918-96bb-f8e5045c1a4a",
+      "id": "59aa04fe-32fb-4e2a-ba84-a21bc7fcb697",
       "name": "Formato da Triagem",
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
@@ -206,7 +206,7 @@
       "parameters": {
         "jsCode": "// Recebe a saída da IA (caminho de sucesso) ou o erro (caminho de falha) e aplica o fallback quando necessário.\nconst base = $('Validar e Normalizar').first().json;\nconst out = $json.output || {};\nconst CATEGORIAS = ['Acadêmico', 'Técnico', 'Financeiro', 'Outro', 'Revisão manual'];\nconst URGENCIAS = ['Baixa', 'Média', 'Alta'];\n\nconst iaOk = !$json.error\n  && CATEGORIAS.includes(out.categoria)\n  && URGENCIAS.includes(out.urgencia)\n  && typeof out.resposta === 'string' && out.resposta.trim().length > 0;\n\nconst triagem = iaOk\n  ? {\n      categoria: out.categoria,\n      urgencia: out.urgencia,\n      resumo: String(out.resumo || base.duvida.slice(0, 100)).trim().slice(0, 200),\n      resposta_ia: out.resposta.trim().slice(0, 800),\n      classificado_por_ia: true,\n    }\n  : {\n      categoria: 'Revisão manual',\n      urgencia: 'Média',\n      resumo: base.duvida.slice(0, 100),\n      resposta_ia: 'Recebemos sua dúvida. A equipe da disciplina vai analisá-la e responder em breve.',\n      classificado_por_ia: false,\n    };\n\nconst status = (triagem.categoria === 'Revisão manual' || !triagem.classificado_por_ia) ? 'Em revisão' : 'Respondida';\n\nreturn [{\n  json: {\n    protocolo: base.protocolo,\n    data_abertura: base.data_abertura,\n    nome: base.nome,\n    email: base.email,\n    curso: base.curso,\n    duvida: base.duvida,\n    ...triagem,\n    status,\n    precisa_equipe: triagem.urgencia === 'Alta' || status === 'Em revisão',\n  },\n}];"
       },
-      "id": "74ad074e-3a93-4efe-a9a3-ae246e09946b",
+      "id": "279a7003-62a1-4b64-937a-4082937680e6",
       "name": "Consolidar Triagem",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -358,7 +358,7 @@
         },
         "options": {}
       },
-      "id": "1253e9f5-c173-4c70-8d42-129cc03e4d30",
+      "id": "868ac305-2f81-4652-bbe4-22772a02280c",
       "name": "Registrar Dúvida na Planilha",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
@@ -376,7 +376,7 @@
           "responseCode": 500
         }
       },
-      "id": "b0f4dc07-38f7-4d45-984b-ded84d19c843",
+      "id": "c49dff14-0c09-4536-82cb-8a0c15065a30",
       "name": "Responder Falha no Registro",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
@@ -395,7 +395,7 @@
           "appendAttribution": false
         }
       },
-      "id": "d01c6f96-9b61-4bc0-95e3-189da786583b",
+      "id": "e94db1ec-646e-4fac-ab8a-8b3478388a97",
       "name": "Enviar Resposta ao Aluno",
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
@@ -416,7 +416,7 @@
           },
           "conditions": [
             {
-              "id": "9e49ffc9-f6ae-41dc-a4b9-efc576029ba8",
+              "id": "13a8ca02-6151-4dd3-8f99-85138d84b220",
               "leftValue": "={{ $('Consolidar Triagem').first().json.precisa_equipe }}",
               "rightValue": "",
               "operator": {
@@ -430,7 +430,7 @@
         },
         "options": {}
       },
-      "id": "ffda5ec0-1f01-4a84-abb6-5a37efa9b7ee",
+      "id": "2048d6ae-7d58-4cbf-8f0c-fbd7ec77953b",
       "name": "Precisa da Equipe?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -449,7 +449,7 @@
           "appendAttribution": false
         }
       },
-      "id": "28f79c42-c27a-441c-b5cf-c4ef37909952",
+      "id": "9e9d9399-7c4d-43fe-95eb-b14f00a3c20d",
       "name": "Alertar Equipe",
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
@@ -465,7 +465,7 @@
         "responseBody": "={{ JSON.stringify({ sucesso: true, protocolo: $('Consolidar Triagem').first().json.protocolo, data_abertura: $('Consolidar Triagem').first().json.data_abertura, categoria: $('Consolidar Triagem').first().json.categoria, urgencia: $('Consolidar Triagem').first().json.urgencia, resumo: $('Consolidar Triagem').first().json.resumo, resposta: $('Consolidar Triagem').first().json.resposta_ia, status: $('Consolidar Triagem').first().json.status, classificado_por_ia: $('Consolidar Triagem').first().json.classificado_por_ia }) }}",
         "options": {}
       },
-      "id": "e27c5f90-8432-4c63-a15d-dedac43486e0",
+      "id": "27172f30-9237-4977-9cf5-2ad83f195bd5",
       "name": "Responder Sucesso",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,

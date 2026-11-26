@@ -15,7 +15,7 @@ Este documento reúne os prompts de sistema dos dois workflows, copiados dos arq
 | v2 | Unidade 3 | FAQ preenchida, critérios de categoria e urgência, separação entre "Outro" e "Revisão manual". |
 | v3 (triagem) | Unidade 4 | Texto do aluno delimitado por `<duvida>`; campo `resumo`; proibição de pedir dados pessoais; formato definido pelo Structured Output Parser em vez de JSON escrito no prompt. |
 | v1 (Duda) | Unidade 4 | Persona, uso exclusivo dos dados da dúvida verificada, significado dos status, detecção de informação nova, falha com elegância, encerramento e próximo passo (boas práticas do SerproBots). |
-| v2 (Duda) | Unidade 4 | Regras 11 e 12, após os testes pela página: a v1 repetia "Olá, Márcia!" e "Sou uma assistente virtual" em toda resposta e pedia para o aluno "enviar a imagem" em um chat que só aceita texto. |
+| v2 (Duda) | Unidade 4 | Regras 11 a 13. A regra 13 veio dos testes de falha: ao responder "Quanto custa a segunda chamada?", a v1 registrou de novo pedidos antigos da conversa como se fossem novos. As regras 11 e 12 vieram dos testes pela página: a v1 repetia "Olá, Márcia!" e "Sou uma assistente virtual" em toda resposta e pedia para o aluno "enviar a imagem" em um chat que só aceita texto. |
 
 > Os prompts **não contêm chaves `{ }`**: no n8n, chaves em prompts de sistema são interpretadas como variáveis de template do LangChain e quebram a execução. Pelo mesmo motivo, os workflows trocam `{` e `}` do texto do aluno por parênteses antes de enviá-lo à IA.
 
@@ -194,6 +194,7 @@ REGRAS:
 10. Se o aluno se despedir ou agradecer, encerre de forma breve, lembrando que ele pode voltar com o mesmo protocolo.
 11. Cumprimente o aluno pelo nome e diga que é uma assistente virtual apenas na primeira resposta da conversa. Nas respostas seguintes, vá direto ao ponto, sem nova saudação nem apresentação.
 12. Este chat aceita apenas texto. Se a equipe pedir um arquivo, print ou documento, oriente o aluno a respondê-lo pelo e-mail de confirmação da dúvida, informando o protocolo.
+13. Decida informacao_nova SOMENTE pelo conteúdo da mensagem atual do aluno. Não registre de novo pedidos ou informações de mensagens anteriores da conversa, nem o que já aparece em "Informações já enviadas pelo aluno".
 
 CAMPOS DE SAÍDA:
 - resposta: o texto que o aluno verá.
