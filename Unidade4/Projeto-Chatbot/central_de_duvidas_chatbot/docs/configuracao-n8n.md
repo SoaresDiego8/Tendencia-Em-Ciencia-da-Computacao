@@ -21,6 +21,10 @@ Os dois workflows usam o fuso `America/Sao_Paulo` e compartilham a mesma planilh
 
 A chave do Gemini é gerada no Google AI Studio (a mesma usada na Unidade 3 pode ser reaproveitada).
 
+> **Atenção ao importar:** ao selecionar a planilha e a aba nos nós do Google Sheets, o n8n recarrega as colunas e **apaga o mapeamento** que veio no arquivo. Depois de escolher a aba, preencha de novo cada campo com a expressão `{{ $json.<nome_da_coluna> }}` (por exemplo, `{{ $json.protocolo }}`), conforme as listas das seções 6 (envio) e 4 (chat). Deixe vazias as colunas que o nó não deve alterar.
+>
+> **Testes com `curl` no Windows:** envie o corpo a partir de um arquivo UTF-8 (`--data-binary @arquivo.json`). Passado direto na linha de comando, o texto pode perder a acentuação e o curso "Ciência da Computação" é recusado como inválido.
+
 ## Planilha
 
 Crie uma planilha com estas colunas na linha 1, exatamente com estes nomes:

@@ -373,10 +373,10 @@ dd { margin: 0; min-width: 0; }
 </section>
 
 <script>
-/* Endereços de produção dos webhooks no n8n. Troque SEU-WORKSPACE pelo endereço da sua instância. */
+/* Endereços de produção dos webhooks no n8n (Production URLs dos nós Webhook). */
 window.CONFIG_CENTRAL = {
-  WEBHOOK_URL: "https://SEU-WORKSPACE.app.n8n.cloud/webhook/abrir-duvida",
-  CHAT_URL: "https://SEU-WORKSPACE.app.n8n.cloud/webhook/chat-duvida"
+  WEBHOOK_URL: "https://tendencia-computacao.app.n8n.cloud/webhook/abrir-duvida",
+  CHAT_URL: "https://tendencia-computacao.app.n8n.cloud/webhook/chat-duvida"
 };
 </script>
 
@@ -543,7 +543,7 @@ window.CONFIG_CENTRAL = {
 /* Assistente Duda: conversa com o workflow "Central de Dúvidas - Chatbot de Acompanhamento" no n8n. */
 (function () {
   var CHAT_URL = window.CONFIG_CENTRAL.CHAT_URL;
-  var TEMPO_LIMITE_MS = 45000;
+  var TEMPO_LIMITE_MS = 90000;   /* a primeira resposta do Gemini pode passar de 45 s */
   var PROTO_RE = /^DV-\d{8}-[A-Z0-9]{4}$/;
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   var PRIMEIRA_PERGUNTA = "Qual é o andamento da minha dúvida?";
@@ -588,7 +588,8 @@ window.CONFIG_CENTRAL = {
   function addMsg(tipo, texto, tag) {
     var el = document.createElement("div");
     el.className = "msg " + tipo;
-    el.textContent = texto;
+    /* O modelo às vezes devolve aspas escapadas (\"Respondida\"); mostra só as aspas. */
+    el.textContent = String(texto || "").replace(/\\+"/g, '"');
     if (tag) { var t = document.createElement("span"); t.className = "msg-tag"; t.textContent = tag; el.appendChild(t); }
     log.appendChild(el); log.scrollTop = log.scrollHeight;
     return el;
