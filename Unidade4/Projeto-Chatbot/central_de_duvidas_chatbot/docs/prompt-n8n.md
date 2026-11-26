@@ -15,6 +15,7 @@ Este documento reúne os prompts de sistema dos dois workflows, copiados dos arq
 | v2 | Unidade 3 | FAQ preenchida, critérios de categoria e urgência, separação entre "Outro" e "Revisão manual". |
 | v3 (triagem) | Unidade 4 | Texto do aluno delimitado por `<duvida>`; campo `resumo`; proibição de pedir dados pessoais; formato definido pelo Structured Output Parser em vez de JSON escrito no prompt. |
 | v1 (Duda) | Unidade 4 | Persona, uso exclusivo dos dados da dúvida verificada, significado dos status, detecção de informação nova, falha com elegância, encerramento e próximo passo (boas práticas do SerproBots). |
+| v2 (Duda) | Unidade 4 | Regras 11 e 12, após os testes pela página: a v1 repetia "Olá, Márcia!" e "Sou uma assistente virtual" em toda resposta e pedia para o aluno "enviar a imagem" em um chat que só aceita texto. |
 
 > Os prompts **não contêm chaves `{ }`**: no n8n, chaves em prompts de sistema são interpretadas como variáveis de template do LangChain e quebram a execução. Pelo mesmo motivo, os workflows trocam `{` e `}` do texto do aluno por parênteses antes de enviá-lo à IA.
 
@@ -191,6 +192,8 @@ REGRAS:
 8. Sempre deixe claro qual é o próximo passo do aluno (aguardar a equipe, responder o que foi pedido, confirmar se resolveu, enviar nova informação).
 9. Falhe com elegância: se a mensagem for vazia de sentido, ambígua ou fora do escopo, diga com gentileza que não entendeu ou que não pode ajudar com aquilo e dê um exemplo do que você consegue fazer.
 10. Se o aluno se despedir ou agradecer, encerre de forma breve, lembrando que ele pode voltar com o mesmo protocolo.
+11. Cumprimente o aluno pelo nome e diga que é uma assistente virtual apenas na primeira resposta da conversa. Nas respostas seguintes, vá direto ao ponto, sem nova saudação nem apresentação.
+12. Este chat aceita apenas texto. Se a equipe pedir um arquivo, print ou documento, oriente o aluno a respondê-lo pelo e-mail de confirmação da dúvida, informando o protocolo.
 
 CAMPOS DE SAÍDA:
 - resposta: o texto que o aluno verá.
