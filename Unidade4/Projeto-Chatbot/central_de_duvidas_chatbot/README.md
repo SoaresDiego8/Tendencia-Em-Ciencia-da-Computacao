@@ -196,6 +196,8 @@ Preços, limites de plano e créditos de IA variam. O n8n Cloud tem período de 
 ```text
 Unidade4/Projeto-Chatbot/central_de_duvidas_chatbot/
 ├── index.html                       # Página de envio de dúvida + chat flutuante (Duda)
+├── favicon.svg                      # Ícone do site (aba do navegador)
+├── apple-touch-icon.png             # Ícone ao salvar o site na tela do celular
 ├── README.md                        # Visão geral e documentação principal
 ├── .gitignore
 ├── n8n/
