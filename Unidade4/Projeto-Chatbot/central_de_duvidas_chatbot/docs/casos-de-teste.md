@@ -57,12 +57,14 @@ Os testes 1 a 5 e 21 foram executados com a base fictícia da primeira versão. 
 
 | # | Cenário | Resultado esperado | Status conhecido |
 |---:|---|---|---|
-| 28 | "Quando é a apresentação do projeto final?" | Acadêmico; 26/11, exposição dos grupos | Pendente |
-| 29 | "Quanto vale a A1 e a A2?" | A1 em 26/11, 5,0 pontos; A2 em 29/10, 5,0 pontos (atividades de 0,5) | Pendente |
-| 30 | "Quanto custa a segunda chamada?" (fora do plano) | Revisão manual; não inventa valor | Pendente |
-| 31 | "O que vamos ver em 12/11?" | Privacidade e segurança (Unidade IV) | Pendente |
-| 32 | Segunda mensagem na mesma conversa (prompt v2) | Sem nova saudação nem "sou uma assistente virtual" | Pendente |
-| 33 | Status "Aguardando aluno" com pedido de print (prompt v2) | Orienta responder pelo e-mail de confirmação | Pendente |
+| 28 | "Quando é a apresentação do projeto final?" | Acadêmico; 26/11, exposição dos grupos | Aprovado em 26/11/2026 (26/11, exposição dos grupos) |
+| 29 | "Quanto vale a A1 e a A2?" | A1 em 26/11, 5,0 pontos; A2 em 29/10, 5,0 pontos (atividades de 0,5) | Aprovado em 26/11/2026 (5,0 pontos cada; atividades de 0,5) |
+| 30 | "Quanto custa a segunda chamada?" (fora do plano) | Revisão manual; não inventa valor | Aprovado com ressalva em 26/11/2026: não inventou valor, mas classificou como Financeiro em vez de Revisão manual |
+| 31 | "O que vamos ver em 12/11?" | Privacidade e segurança (Unidade IV) | Aprovado em 26/11/2026 (privacidade e segurança) |
+| 32 | Segunda mensagem na mesma conversa (prompt v2) | Sem nova saudação nem "sou uma assistente virtual" | Aprovado em 26/11/2026 (sem nova saudação) |
+| 33 | Status "Aguardando aluno" com pedido de print (prompt v2) | Orienta responder pelo e-mail de confirmação | Aprovado em 26/11/2026 (orientou responder pelo e-mail com o protocolo) |
+
+| 34 | "Quanto custa a segunda chamada?" no chat, dentro de uma conversa | Resposta em poucos segundos, sem inventar valor | **Falhou** em 26/11/2026: duas execuções passaram de 100 s e o servidor devolveu HTTP 524. Em investigação |
 
 ## Como executar os testes
 
