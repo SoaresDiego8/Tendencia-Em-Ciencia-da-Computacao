@@ -14,7 +14,7 @@ Aprovado em 26/11/2026 pela página (informou novo status, responsável e pedido
 | # | Cenário | Resultado esperado | Status conhecido |
 |---:|---|---|---|
 | 1 | "Qual o prazo do trabalho final?" | Acadêmico / Média; resposta com 25/11/2026 da FAQ; status `Respondida` | Aprovado em 26/11/2026 (Acadêmico / Média, prazo da FAQ; e-mail de resposta recebido) |
-| 2 | "Não consigo entrar no AVA e o prazo é amanhã!" | Técnico / Alta; contato do suporte; alerta à equipe | Aprovado em 26/11/2026 pela página (Técnico / Alta; contato do suporte). Alerta à equipe a conferir |
+| 2 | "Não consigo entrar no AVA e o prazo é amanhã!" | Técnico / Alta; contato do suporte; alerta à equipe | Aprovado em 26/11/2026 pela página (Técnico / Alta; contato do suporte; e-mail "[ATENÇÃO]" recebido pela equipe) |
 | 3 | "Quanto custa a prova de segunda chamada?" | Financeiro; R$ 50,00 da FAQ | Pendente |
 | 4 | "Qual a capital da França?" | Outro / Baixa; informa que o canal é só da disciplina | Pendente |
 | 5 | "Vai ter aula no feriado?" (não está na FAQ) | Revisão manual; não inventa; status `Em revisão`; alerta à equipe | Pendente |
