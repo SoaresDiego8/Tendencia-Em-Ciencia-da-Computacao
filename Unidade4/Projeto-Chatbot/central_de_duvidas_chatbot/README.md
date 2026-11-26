@@ -118,19 +118,19 @@ Há tema claro e escuro, conforme o sistema.
 
 ## 4. Coletar acervo
 
-O acervo da Duda é a **FAQ da disciplina** construída na Unidade 3, com dados fictícios. Ela cobre:
+O acervo oficial da Duda é o **Plano de Aulas 2026/2** da disciplina (Professora Kadidja Valéria, turma de quinta-feira). Ele cobre:
 
-- prazo do trabalho final;
-- critérios de avaliação;
-- tamanho do grupo;
-- ferramentas permitidas;
-- entrega no GitHub;
-- apresentação;
-- acesso ao AVA;
-- Semana de Tecnologia;
-- taxa de segunda chamada.
+- as quatro unidades e o conteúdo de cada aula;
+- o cronograma semana a semana, de 06/08 a 26/11;
+- a **Avaliação A2** (29/10: prova teórico-prática; atividades de 0,5 ponto, somando 5,0);
+- a **Avaliação A1** (26/11: avaliação e reflexão, 5,0 pontos);
+- o **projeto final** (solução inteligente em grupo, apresentada em 26/11);
+- a **Avaliação Final** (17/12);
+- as ferramentas usadas nas aulas.
 
-O texto completo está em [`docs/prompt-n8n.md`](docs/prompt-n8n.md).
+O texto completo da base está em [`docs/prompt-n8n.md`](docs/prompt-n8n.md).
+
+**Evolução do acervo:** na primeira versão, a base era a FAQ fictícia da Unidade 3 (prazo 25/11, taxa de segunda chamada de R$ 50,00, e-mail de suporte do AVA). Ao receber o plano de aulas oficial, a base foi trocada. Os itens sem respaldo no plano foram retirados, e perguntas sobre eles passam a ir para a equipe como "Revisão manual". É a coleta de acervo do SerproBots: só entra na base o que vem de fonte oficial.
 
 Além da FAQ, a cada mensagem a Duda recebe **apenas os dados da dúvida verificada**: status, responsável, última atualização da equipe, resposta automática e informações já enviadas. Ela nunca lê a planilha diretamente.
 
@@ -312,6 +312,8 @@ O SerproBots recomenda testar o caminho feliz, perguntas não previstas, ambigui
 
 ### Resultados (26/11/2026)
 
+Esta bateria foi executada com a base fictícia da primeira versão. Depois da troca pelo plano de aulas, os testes de conteúdo devem ser repetidos (teste de regressão).
+
 | Grupo | Exemplos | Resultado |
 |---|---|---|
 | Caminho feliz | prazo do trabalho, segunda chamada, andamento pelo chat | ✅ respostas da FAQ e status corretos |
@@ -345,7 +347,7 @@ O SerproBots recomenda testar o caminho feliz, perguntas não previstas, ambigui
 |---|---|---|
 | <img src="docs/prints/03-chat-nao-resolveu.png" alt="Etiqueta Informação registrada para a equipe" width="260"> | <img src="docs/prints/04-chat-recusa-prompt.png" alt="Duda recusando mostrar o prompt" width="260"> | <img src="docs/prints/05-chat-status-atualizado.png" alt="Duda informando status Aguardando aluno" width="260"> |
 
-Os dados são fictícios. As capturas foram feitas antes da simplificação do layout (mesmas cores), e o comportamento do chat não mudou.
+Os nomes e e-mails são fictícios. As capturas foram feitas antes da simplificação do layout (mesmas cores) e com a base de conhecimento fictícia da primeira versão. O comportamento do chat não mudou.
 
 ---
 
@@ -362,7 +364,7 @@ No SerproBots, a homologação é a validação do conteúdo pelo "cliente" ante
 - [x] Nenhum dado de outra dúvida é revelado.
 - [ ] Prompt v2 (regras 11 a 13) aplicado no n8n e conversa revalidada.
 - [ ] Testes de falha das integrações executados.
-- [ ] Conteúdo da FAQ validado pela professora (hoje com dados fictícios).
+- [x] Base de conhecimento trocada pelo plano de aulas oficial da disciplina (fonte validada pela professora).
 
 **Roteiro de demonstração**
 

@@ -25,7 +25,7 @@ Este documento segue o fluxo de trabalho da [documentação do SerproBots](https
 
 ## 3. Acervo (base de conhecimento)
 
-A base é a FAQ da disciplina construída na Unidade 3 (prazo do trabalho final, avaliação, grupos, ferramentas, entrega no GitHub, apresentação, acesso ao AVA, Semana de Tecnologia e taxa de segunda chamada). Todos os dados são **fictícios**. O texto completo está em [`prompt-n8n.md`](prompt-n8n.md).
+O acervo oficial é o **Plano de Aulas 2026/2** da disciplina: unidades, cronograma semana a semana, Avaliações A1, A2 e AF, projeto final e ferramentas. A primeira versão usava a FAQ fictícia da Unidade 3; ela foi substituída quando o plano oficial foi obtido, e os itens sem respaldo no plano foram removidos. O texto completo está em [`prompt-n8n.md`](prompt-n8n.md).
 
 Além da FAQ, a cada mensagem a Duda recebe apenas os dados da dúvida verificada (status, responsável, última atualização, resposta automática e informações já enviadas).
 
@@ -49,11 +49,12 @@ O SerproBots recomenda organizar as intenções em uma planilha com Tema, Assunt
 
 | Assunto | Intenção | Pergunta de exemplo | Resposta esperada | Entidade | Menu de opções |
 |---|---|---|---|---|---|
-| Prazos | `prazo_trabalho` | "Até quando entrego o trabalho?" | 25/11/2026, às 23h59, pelo AVA. | — | — |
+| Projeto final | `data_projeto_final` | "Quando é a apresentação do projeto?" | 26/11, exposição dos grupos (plano de aulas). | `@sys-date` | — |
+| Cronograma | `conteudo_aula` | "O que vamos ver em 12/11?" | Privacidade e segurança (Unidade IV). | `@sys-date` | — |
 | Avaliação | `criterios_avaliacao` | "Como o trabalho é avaliado?" | 2,0 pontos: clareza 0,7, análise crítica 0,7, GitHub 0,3, colaboração 0,3. | — | — |
 | Grupos | `tamanho_grupo` | "Posso fazer sozinho?" | Até 3 estudantes; individual é aceito. | — | — |
-| Financeiro | `taxa_segunda_chamada` | "Quanto custa a segunda chamada?" | R$ 50,00, boleto na secretaria acadêmica. | `@sys-currency` (valor) | — |
-| Técnico | `acesso_ava` | "Não consigo entrar no AVA." | Abrir chamado em suporte@faculdade.edu.br. | — | — |
+| Avaliação | `avaliacao_a1_a2_af` | "Quanto vale a A1?" | A1 em 26/11, 5,0 pontos; A2 em 29/10, 5,0 pontos; AF em 17/12. | `@sys-date` | — |
+| Técnico | `acesso_ava` | "Não consigo entrar no AVA." | Não está no plano de aulas: registra para a equipe, com urgência alta se houver prazo. | — | — |
 | Fora da base | `pergunta_sem_resposta` | "Vai ter aula no feriado?" | Não inventa; registra para a equipe. | — | — |
 
 ### Tema: Conversa

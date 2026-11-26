@@ -108,8 +108,8 @@ Nó **Registrar Dúvida na Planilha** (Append Row), com as 12 colunas do envio. 
   "data_abertura": "26/11/2026 10:30",
   "categoria": "Acadêmico",
   "urgencia": "Média",
-  "resumo": "Aluno pergunta o prazo do trabalho final.",
-  "resposta": "O trabalho final deve ser entregue até 25/11/2026, às 23h59, pelo AVA.",
+  "resumo": "Aluno pergunta a data da apresentação do projeto final.",
+  "resposta": "A apresentação do projeto final (exposição dos grupos) é em 26/11, no mesmo dia da Avaliação A1.",
   "status": "Respondida",
   "classificado_por_ia": true
 }

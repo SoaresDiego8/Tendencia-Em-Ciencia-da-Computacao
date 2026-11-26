@@ -51,6 +51,19 @@ Aprovado em 26/11/2026 pela página (informou novo status, responsável e pedido
 - A v1 do prompt da Duda repetia saudação e apresentação em toda resposta e, no teste 20, pediu para o aluno "enviar a imagem" pelo chat, que só aceita texto. As regras 11 e 12 (v2 do prompt, em [`prompt-n8n.md`](prompt-n8n.md)) corrigem os dois pontos; repetir os testes 14, 20 e 25 após aplicar a v2 no n8n.
 - Evidências em [`prints/`](prints/).
 
+### Regressão após a troca da base (Base v2: plano de aulas)
+
+Os testes 1 a 5 e 21 foram executados com a base fictícia da primeira versão. Depois da troca pelo plano de aulas oficial, a base esperada muda:
+
+| # | Cenário | Resultado esperado | Status conhecido |
+|---:|---|---|---|
+| 28 | "Quando é a apresentação do projeto final?" | Acadêmico; 26/11, exposição dos grupos | Pendente |
+| 29 | "Quanto vale a A1 e a A2?" | A1 em 26/11, 5,0 pontos; A2 em 29/10, 5,0 pontos (atividades de 0,5) | Pendente |
+| 30 | "Quanto custa a segunda chamada?" (fora do plano) | Revisão manual; não inventa valor | Pendente |
+| 31 | "O que vamos ver em 12/11?" | Privacidade e segurança (Unidade IV) | Pendente |
+| 32 | Segunda mensagem na mesma conversa (prompt v2) | Sem nova saudação nem "sou uma assistente virtual" | Pendente |
+| 33 | Status "Aguardando aluno" com pedido de print (prompt v2) | Orienta responder pelo e-mail de confirmação | Pendente |
+
 ## Como executar os testes
 
 1. Utilize ambiente de testes e dados inteiramente fictícios. Para os e-mails, use aliases de uma conta da equipe (`usuario+t1@gmail.com`), como na Unidade 3.
